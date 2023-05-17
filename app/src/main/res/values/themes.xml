@@ -1,9 +1,52 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
     <style name="Base.Theme.EntomologistApp" parent="Theme.Material3.DayNight.NoActionBar">
+
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorTertiary">@color/color_tertiary</item>
+
+        <!--Fonts-->
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorOnTertiary">@color/color_on_tertiary</item>
+
+        <!-- Containers -->
+        <item name="colorPrimaryContainer">@color/color_primary_container</item>
+        <item name="colorSecondaryContainer">@color/color_secondary_container</item>
+        <item name="colorTertiaryContainer">@color/color_tertiary_container</item>
+
+        <!-- Fonts in containers -->
+        <item name="colorOnPrimaryContainer">@color/color_on_primary_container</item>
+        <item name="colorOnSecondaryContainer">@color/color_on_secondary_container</item>
+        <item name="colorOnTertiaryContainer">@color/color_on_tertiary_container</item>
+
+        <!-- Others system colors -->
+        <item name="android:colorBackground">@color/color_background</item>
+        <item name="colorError">@color/color_error</item>
+        <item name="colorSurface">@color/color_surface</item>
+
+        <!-- Others fonts system colors-->
+        <item name="colorOnBackground">@color/color_on_background</item>
+        <item name="colorOnError">@color/color_on_error</item>
+        <item name="colorOnSurface">@color/color_on_surface</item>
+
+        <!-- Others -->
+
+        <item name="colorErrorContainer">@color/color_error_container</item>
+        <item name="colorSurfaceVariant">@color/color_surface_variant</item>
+
+        <item name="colorOnErrorContainer">@color/color_on_error_container</item>
+        <item name="colorOnSurfaceVariant">@color/color_on_surface_variant</item>
+
+        <!-- Borders -->
+        <item name="colorOutline">@color/color_outline</item>
+
     </style>
 
     <style name="Theme.EntomologistApp" parent="Base.Theme.EntomologistApp" />
+
+
 </resources>
