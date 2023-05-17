@@ -1,3 +1,24 @@
+buildscript {
+
+    ext.hilt_version = "2.44"
+    ext.hilt_navigation_version = "1.0.0"
+    ext.nav_version = "2.5.3"
+    ext.coroutine_version = "1.6.4"
+    ext.lifecyle_runtime_version = "2.6.1"
+    ext.viewmodel_version = "2.6.1"
+    ext.viewmodel_activity_version = "1.7.1"
+    ext.viewmodel_fragment_version = "1.5.7"
+    ext.livedata_version = "2.6.1"
+    ext.room_version = "2.5.1"
+    ext.datastore_version = "1.0.0"
+    ext.glide_version = "4.15.1"
+
+    dependencies {
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version '8.0.1' apply false
