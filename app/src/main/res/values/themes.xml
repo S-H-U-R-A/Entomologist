@@ -24,7 +24,7 @@
         <item name="colorOnTertiaryContainer">@color/color_on_tertiary_container</item>
 
         <!-- Others system colors -->
-        <item name="android:colorBackground">@color/color_background</item>
+        <item name="android:colorBackground">@color/color_secondary_container</item>
         <item name="colorError">@color/color_error</item>
         <item name="colorSurface">@color/color_surface</item>
 
@@ -48,7 +48,14 @@
 
     <style name="Theme.EntomologistApp" parent="Base.Theme.EntomologistApp" >
         <item name="android:statusBarColor">@color/color_secondary_container</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="Theme.EntomologistApp.starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/color_secondary_container</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/image_splash_entomology</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.EntomologistApp</item>
+    </style>
 
 </resources>
