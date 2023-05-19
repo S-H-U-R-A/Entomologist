@@ -1,21 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.signup.SignUpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageButton
+        android:id="@+id/ib_avatar_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:textAlignment="center"
+        android:layout_marginTop="55dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:hint="@string/name_user"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:boxCornerRadiusTopStart="25dp"
+        app:boxCornerRadiusTopEnd="25dp"
+        app:boxCornerRadiusBottomEnd="25dp"
+        app:boxCornerRadiusBottomStart="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ib_avatar_user"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_user"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content_location"
+        android:background="@color/color_background"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_name_user"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        >
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/ms_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtv_title_msg_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Compartenos tu ubicación"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ms_location"
+            app:layout_constraintTop_toTopOf="@id/ms_location"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtv_body_msg_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Deja que Entomology conozca tu ubicación para gestionar tus registros"
+            app:layout_constraintStart_toStartOf="@id/mtv_title_msg_location"
+            app:layout_constraintTop_toBottomOf="@id/mtv_title_msg_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_skip"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="89dp"
+        android:text="Omitir"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        app:layout_constraintStart_toStartOf="@+id/cl_content_location"
+        app:layout_constraintTop_toBottomOf="@id/cl_content_location"
+        app:layout_constraintEnd_toStartOf="@+id/mb_save"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_save"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Guardar"
+        android:layout_marginEnd="32dp"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        app:layout_constraintStart_toEndOf="@+id/mb_skip"
+        app:layout_constraintEnd_toEndOf="@+id/cl_content_location"
+        app:layout_constraintTop_toTopOf="@id/mb_skip"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

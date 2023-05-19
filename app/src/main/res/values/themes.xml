@@ -24,14 +24,14 @@
         <item name="colorOnTertiaryContainer">@color/color_on_tertiary_container</item>
 
         <!-- Others system colors -->
-        <item name="android:colorBackground">@color/color_secondary_container</item>
+        <item name="android:colorBackground">@color/color_secondary_container</item><!-- Colores de fondo-->
         <item name="colorError">@color/color_error</item>
         <item name="colorSurface">@color/color_surface</item>
 
         <!-- Others fonts system colors-->
         <item name="colorOnBackground">@color/color_on_background</item>
         <item name="colorOnError">@color/color_on_error</item>
-        <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="colorOnSurface">@color/color_on_background</item><!-- Colores de textos en edittext-->
 
         <!-- Others -->
 

@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         navController = navHostFragment.navController
 
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
