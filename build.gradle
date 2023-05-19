@@ -13,10 +13,11 @@ buildscript {
     ext.datastore_version = "1.0.0"
     ext.glide_version = "4.15.1"
 
-    /*
+
     dependencies {
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-    }*/
+        //classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+    }
 
 }
 
