@@ -6,20 +6,19 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         //Start Splash
         val screenSplash = installSplashScreen()
+        screenSplash.setKeepOnScreenCondition{ false }
 
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
-
-        screenSplash.setKeepOnScreenCondition{ false }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
