@@ -40,12 +40,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setupActionBarWithNavController( navController, appBarConfiguration)
 
 
-        validateFirstPage()
+        canNavigateNewRegister()
 
     }
 
+    private fun canNavigateNewRegister() {
 
-    private fun validateFirstPage() {
+        //SE CONFIGURA NUEVO START DESTINATION
 
         lifecycleScope.launch {
 
@@ -56,9 +57,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     val graph = navController.navInflater.inflate(R.navigation.nav_graph)
 
                     if (firstTime) {
+
                         graph.setStartDestination(R.id.recordFragment )
+
                     } else {
+
                         graph.setStartDestination(R.id.signUpFragment )
+
                     }
 
                     navController.graph = graph
@@ -69,10 +74,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         }
 
-    }
-
-    private fun canNavigateNewRegister(){
-        //TODO("Validar el ingreso")
     }
 
     override fun onSupportNavigateUp(): Boolean {

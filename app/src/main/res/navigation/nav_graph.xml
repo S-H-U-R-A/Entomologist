@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/formInsectFragment"
-        android:name="com.pragma.entomologistapp.ui.registerInsect.FormInsectFragment"
+        android:name="com.pragma.entomologistapp.ui.formInsect.FormInsectFragment"
         android:label="fragment_form_insect"
         tools:layout="@layout/fragment_form_insect" />
 

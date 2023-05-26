@@ -8,7 +8,6 @@
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorTertiary">@color/color_tertiary</item>
 
-
         <!--Fonts-->
         <item name="colorOnPrimary">@color/color_on_primary</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>

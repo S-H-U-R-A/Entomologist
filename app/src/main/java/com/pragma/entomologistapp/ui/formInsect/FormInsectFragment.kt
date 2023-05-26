@@ -1,4 +1,4 @@
-package com.pragma.entomologistapp.ui.registerInsect
+package com.pragma.entomologistapp.ui.formInsect
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
