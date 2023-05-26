@@ -1,4 +1,4 @@
-package com.pragma.entomologistapp.data.local
+package com.pragma.entomologistapp.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -33,8 +33,5 @@ abstract class EntomologyDataBase : RoomDatabase() {
     abstract fun insectDao(): InsectDao
     abstract fun recordDao(): RecordDao
     abstract fun geolocationDao (): GeolocationDao
-
-
-
 
 }

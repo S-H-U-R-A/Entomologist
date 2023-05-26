@@ -2,7 +2,7 @@ package com.pragma.entomologistapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.pragma.entomologistapp.data.local.EntomologyDataBase
+import com.pragma.entomologistapp.data.local.database.EntomologyDataBase
 import com.pragma.entomologistapp.data.local.database.dao.EntomologistDao
 import com.pragma.entomologistapp.data.local.database.dao.GeolocationDao
 import com.pragma.entomologistapp.data.local.database.dao.InsectDao
