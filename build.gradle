@@ -6,7 +6,7 @@ buildscript {
     ext.coroutine_version = "1.6.4"
     ext.lifecyle_runtime_version = "2.6.1"
     ext.viewmodel_version = "2.6.1"
-    ext.viewmodel_activity_version = "1.7.1"
+    ext.viewmodel_activity_version = "1.7.2"
     ext.viewmodel_fragment_version = "1.5.7"
     ext.livedata_version = "2.6.1"
     ext.room_version = "2.5.1"

@@ -9,6 +9,52 @@
         android:id="@+id/signUpFragment"
         android:name="com.pragma.entomologistapp.ui.signup.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+
+        <action
+            android:id="@+id/action_signUpFragment_to_photoUploadFragment"
+            app:destination="@id/photoUploadFragment" />
+
+        <argument
+            android:name="uri_photo"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"/>
+
+        <action
+            android:id="@+id/action_signUpFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoUploadFragment"
+        android:name="com.pragma.entomologistapp.ui.profile.PhotoUploadFragment"
+        android:label="fragment_photo_upload"
+        tools:layout="@layout/fragment_photo_upload" >
+
+        <argument
+            android:name="uri_photo"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="com.pragma.entomologistapp.ui.registerInsect.RecordFragment"
+        android:label="fragment_record"
+        tools:layout="@layout/fragment_record" >
+        <action
+            android:id="@+id/action_recordFragment_to_formInsectFragment"
+            app:destination="@id/formInsectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formInsectFragment"
+        android:name="com.pragma.entomologistapp.ui.registerInsect.FormInsectFragment"
+        android:label="fragment_form_insect"
+        tools:layout="@layout/fragment_form_insect" />
+
 
 </navigation>
