@@ -1,4 +1,4 @@
-package com.pragma.entomologistapp.domain.usecases
+package com.pragma.entomologistapp.domain.usecases.entomologist
 
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.domain.repository.EntomologistRepository

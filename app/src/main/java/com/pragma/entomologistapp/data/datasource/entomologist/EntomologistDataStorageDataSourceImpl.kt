@@ -1,8 +1,6 @@
-package com.pragma.entomologistapp.data.datasource
+package com.pragma.entomologistapp.data.datasource.entomologist
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import com.pragma.entomologistapp.data.datasource.interfaces.EntomologistDataStorageDataSource
+import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataStorageDataSource
 import com.pragma.entomologistapp.data.local.dataStore.EntomologistPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

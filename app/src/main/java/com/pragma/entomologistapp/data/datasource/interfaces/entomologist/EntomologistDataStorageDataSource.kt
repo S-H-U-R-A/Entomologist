@@ -1,4 +1,4 @@
-package com.pragma.entomologistapp.data.datasource.interfaces
+package com.pragma.entomologistapp.data.datasource.interfaces.entomologist
 
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow

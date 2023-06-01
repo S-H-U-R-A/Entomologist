@@ -1,6 +1,6 @@
-package com.pragma.entomologistapp.data.datasource
+package com.pragma.entomologistapp.data.datasource.entomologist
 
-import com.pragma.entomologistapp.data.datasource.interfaces.EntomologistDataBaseDataSource
+import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataBaseDataSource
 import com.pragma.entomologistapp.data.local.database.dao.EntomologistDao
 import com.pragma.entomologistapp.data.local.database.entity.EntomologistEntity
 import kotlinx.coroutines.flow.Flow

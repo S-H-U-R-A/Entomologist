@@ -19,7 +19,6 @@ class PermissionMultipleRequestHelper <T: Fragment>(
 
         //Esto retorna un objeto, de acciones a realizar cuando se valida un permiso solicitado
         fragment.registerForActivityResult( ActivityResultContracts.RequestMultiplePermissions() ) { mapPermission ->
-
             for( ( permission, granted ) in mapPermission){
                 when {
                     granted -> onGranted()

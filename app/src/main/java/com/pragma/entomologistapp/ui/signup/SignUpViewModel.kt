@@ -1,11 +1,13 @@
 package com.pragma.entomologistapp.ui.signup
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pragma.entomologistapp.core.TypeUser
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
-import com.pragma.entomologistapp.domain.repository.EntomologistRepository
-import com.pragma.entomologistapp.domain.usecases.SaveEntomologistPreferencesUseCase
-import com.pragma.entomologistapp.domain.usecases.saveEntomologistDataBaseUseCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.SaveEntomologistPreferencesUseCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.SaveImageEntomologistAppUseCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.saveEntomologistDataBaseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,38 +19,62 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val saveEntomologistPreferencesUseCase: SaveEntomologistPreferencesUseCase,
-    private val saveEntomologistDataBaseUseCase: saveEntomologistDataBaseUseCase
+    private val saveEntomologistDataBaseUseCase: saveEntomologistDataBaseUseCase,
+    private val saveImageEntomologistAppUseCase: SaveImageEntomologistAppUseCase
 ) : ViewModel() {
 
-    private var _uiState: MutableStateFlow<SignUpUIState> = MutableStateFlow( SignUpUIState() )
+    private var _uiState: MutableStateFlow<SignUpUIState> = MutableStateFlow(SignUpUIState())
     val uiState: StateFlow<SignUpUIState> = _uiState.asStateFlow()
 
-
-
-    fun setSaveButton(isEnable: Boolean){
+    //UI - ACTUALIZA LA OPCION DE GUARDAR
+    fun setSaveButton(isEnable: Boolean) {
         _uiState.update { state ->
             state.copy(
-                save = isEnable
+                canSave = isEnable
             )
         }
     }
 
-    fun setStartDestination(data: Boolean){
+    //ACTUALIZAR LA PREFERENCIA
+    fun setStartDestination(data: Boolean) {
         viewModelScope.launch {
             saveEntomologistPreferencesUseCase(data)
         }
     }
 
-    fun saveEntomologist(entomologist: EntomologistDomain){
+    //GUARDAR EL REGISTRO DEL ENTOMOLOGO
+    fun saveEntomologist(
+        id: Int?,
+        name: String,
+        uriPhoto: String
+    ) {
+
         viewModelScope.launch {
-            saveEntomologistDataBaseUseCase( entomologist )
+
+            saveImageEntomologistAppUseCase(
+                Uri.parse(uriPhoto),
+                TypeUser.USER,
+                null
+            ).also { uriStorage ->
+
+                val entomologist = EntomologistDomain(
+                    id,
+                    name,
+                    uriStorage ?: uriPhoto
+                )
+
+                saveEntomologistDataBaseUseCase(entomologist)
+
+            }
+
         }
+
     }
 
 }
 
-
 data class SignUpUIState(
-    val save: Boolean = false
+    val canSave: Boolean = false
 )
+
 

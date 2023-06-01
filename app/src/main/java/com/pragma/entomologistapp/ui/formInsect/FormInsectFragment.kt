@@ -11,7 +11,7 @@ import com.pragma.entomologistapp.databinding.FragmentFormInsectBinding
 class FormInsectFragment : Fragment() {
 
     private var _binding: FragmentFormInsectBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

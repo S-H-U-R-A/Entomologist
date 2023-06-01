@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,9 +12,10 @@
         layout="@layout/avatar_profile"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_add_insect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="32dp"
         android:background="@color/color_surface_variant"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,5 +58,46 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginHorizontal="26dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_add_insect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mb_reports"
+        tools:listitem="@layout/item_list_insect"
+    />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_reports"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="109dp"
+        android:layout_height="40dp"
+        android:text="Informes"
+        android:layout_marginStart="55dp"
+        android:layout_marginBottom="26dp"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mb_records"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_records"
+        android:layout_width="109dp"
+        android:layout_height="40dp"
+        android:text="Registros"
+        android:textStyle="bold"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="26dp"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        app:layout_constraintStart_toEndOf="@id/mb_reports"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

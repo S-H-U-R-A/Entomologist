@@ -1,4 +1,4 @@
-package com.pragma.entomologistapp.data.datasource.interfaces
+package com.pragma.entomologistapp.data.datasource.interfaces.entomologist
 
 import com.pragma.entomologistapp.data.local.database.entity.EntomologistEntity
 import kotlinx.coroutines.flow.Flow
