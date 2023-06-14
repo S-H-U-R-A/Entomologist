@@ -43,15 +43,16 @@
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusBottomEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
+            app:boxBackgroundColor="?attr/colorSurface"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ib_avatar_insect"
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/mactv"
+                android:id="@+id/mactv_name_insect"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,11 +74,11 @@
             android:layout_marginTop="2dp"
             android:layout_marginHorizontal="46dp"
             android:hint="|URL"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             app:boxCornerRadiusTopStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusBottomEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
+            app:boxBackgroundColor="?attr/colorSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mtv_info"
             app:layout_constraintEnd_toEndOf="parent">
@@ -113,7 +114,7 @@
             android:textStyle="bold"
             android:layout_marginTop="150dp"
             android:layout_marginHorizontal="156dp"
-            android:visibility="gone"
+            android:enabled="false"
             style="@style/Widget.Material3.Button.ElevatedButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_info"

@@ -14,8 +14,8 @@ class EntomologistDataBaseDataSourceImpl @Inject constructor(
         return entomologistDao.getEntomologist(id)
     }
 
-    override suspend fun insertEntomologist(entomologist: EntomologistEntity) {
-        entomologistDao.insertEntomologist(entomologist)
+    override suspend fun insertEntomologist(entomologist: EntomologistEntity): Long {
+        return entomologistDao.insertEntomologist(entomologist)
     }
 
 

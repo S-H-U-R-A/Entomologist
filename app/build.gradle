@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
     id 'androidx.navigation.safeargs.kotlin'
 }
@@ -49,7 +50,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-
     //SPLASH
     implementation("androidx.core:core-splashscreen:1.0.1")
 
@@ -88,6 +88,10 @@ dependencies {
 
     //GLIDE
     implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    //LOCATION
+    implementation "com.google.android.gms:play-services-location:$location_play_services"
 
     //TEST
     testImplementation 'junit:junit:4.13.2'

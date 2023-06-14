@@ -7,6 +7,10 @@ interface EntomologistDataStorageDataSource {
 
     fun getPreferencesFirstTime(): Flow<Boolean>
 
-    suspend fun savePreferencesFirstTime(data: Boolean): Unit
+    suspend fun savePreferencesFirstTime(firstTime: Boolean)
+
+    fun getPreferencesIdUser() : Flow<Long>
+
+    suspend fun savePreferencesIdUser(id: Long)
 
 }

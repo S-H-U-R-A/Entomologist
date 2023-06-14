@@ -34,13 +34,11 @@ fun Bitmap.savePhotoInExternalStorage(
 ): String {
 
     //SE CREA EL PATH
-    val directoryPath: File =
-        File( context.getExternalFilesDir(Environment.DIRECTORY_PICTURES ), "entomologist")
+    val directoryPath = if (type == TypeUser.USER) File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "entomologist")
+                        else File( context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),"insects")
 
     //VALIDAR SI EL DIRECTORIO EXISTE O LO DEBEMOS CREAR
-    if (!directoryPath.exists()) {
-        directoryPath.mkdirs()
-    }
+    if (!directoryPath.exists()) directoryPath.mkdirs()
 
     //IDENTIFICADOR UNICO PARA LA IMAGEN
     val dateId: String =
@@ -49,12 +47,15 @@ fun Bitmap.savePhotoInExternalStorage(
     //NOMBRE DEL ARCHIVO
     var fileName: String = "${type.names}_$dateId.jpg"
 
-    if(nameInsect != null){
+    if (nameInsect != null) {
+
         val nameAux = fileName.split("_")
+
         fileName = buildString {
-            append( nameAux[0] )
-            append( "_${nameInsect}_" )
-            append( nameAux[1] )
+            append(nameAux[0])
+            append("_${nameInsect}_")
+            append(nameAux[1])
+            append(nameAux[2])
         }
     }
 
@@ -65,7 +66,7 @@ fun Bitmap.savePhotoInExternalStorage(
     val outputStream = FileOutputStream(file)
 
     //ESCRIBIMOS LA IMAGEN EN EL ARCHIVO
-    this.compress( Bitmap.CompressFormat.JPEG, 100, outputStream )
+    this.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
 
     //VERIFICAMOS Y CERRAMOS EL ARCHIVO
     outputStream.flush()

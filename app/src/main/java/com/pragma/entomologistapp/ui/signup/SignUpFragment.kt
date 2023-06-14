@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,16 +16,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.pragma.entomologistapp.R
 import com.pragma.entomologistapp.databinding.FragmentSignUpBinding
-import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.util.PermissionMultipleRequestHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -38,9 +37,6 @@ class SignUpFragment : Fragment() {
 
     //VIEWMODEL
     private val viewModel: SignUpViewModel by viewModels()
-
-    //GET ARGUMENTS
-    private val arguments by navArgs<SignUpFragmentArgs>()
 
     //LAUNCHER PERMISSION LOCATION
     private val locationPermission =  PermissionMultipleRequestHelper<SignUpFragment>(
@@ -64,6 +60,9 @@ class SignUpFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         _binding = FragmentSignUpBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -106,37 +105,23 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        //SAVE ENTOMOLOGIST
         binding.mbSave.setOnClickListener {
-
-            //LÓGICA DE GUARDAR EN PREFERENCIAS
-            viewModel.setStartDestination(true)
-
             //LÓGICA DE GUARDAR EL USUARIO Y NAVEGAR
             registerEntomologist(
                 null,
                 binding.tietUser.text.toString().trim(),
                 imageUriSelected ?: URL_PHOTO_DEFAULT
             )
-
-            findNavController().navigate(R.id.action_signUpFragment_to_recordFragment)
-
         }
-
+        //SKIP
         binding.mbSkip.setOnClickListener {
-
-            //LÓGICA DE GUARDAR EN PREFERENCIAS
-            viewModel.setStartDestination(true)
-
+            //LÓGICA DE GUARDAR EL USUARIO Y NAVEGAR
             registerEntomologist(
                 null,
                 binding.tietUser.text.toString().trim().ifEmpty { NAME_DEFAULT },
                 imageUriSelected ?: URL_PHOTO_DEFAULT
             )
-
-            //LÓGICA DE GUARDAR EL USUARIO Y NAVEGAR
-
-            findNavController().navigate(R.id.action_signUpFragment_to_recordFragment)
-
         }
 
     }
@@ -144,15 +129,25 @@ class SignUpFragment : Fragment() {
     private fun initObservers() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED){
-                viewModel.uiState.collect{ stateUi->
-                    handleSaveButton( stateUi )
+                viewModel.uiState.collect{ stateUi ->
+                    handleSaveButton( stateUi.canSave )
+                    handleNavigate( stateUi.isFirstTime )
                 }
             }
         }
     }
 
-    private fun handleSaveButton(stateUi: SignUpUIState) {
-        binding.mbSave.isEnabled = stateUi.canSave
+    private fun handleNavigate(firstTime: Boolean) {
+        if(!firstTime){
+             val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.recordFragment, true)
+                .build()
+             findNavController().navigate(R.id.recordFragment, null, navOptions)
+        }
+    }
+
+    private fun handleSaveButton( canSave: Boolean) {
+        binding.mbSave.isEnabled = canSave
     }
 
     private fun registerEntomologist( id:Int?, name: String, urlPhoto: String ){
@@ -184,6 +179,7 @@ class SignUpFragment : Fragment() {
     }
 
     companion object {
+        const val IS_FIRST_TIME: String = "IS_FIRST_TIME"
         const val NAME_DEFAULT: String = "sin nombre"
         const val URL_PHOTO_DEFAULT: String = "Sin foto"
     }

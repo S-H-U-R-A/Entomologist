@@ -33,6 +33,7 @@
         app:boxCornerRadiusTopEnd="25dp"
         app:boxCornerRadiusBottomEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
+        app:boxBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ib_avatar"
         app:layout_constraintEnd_toEndOf="parent">

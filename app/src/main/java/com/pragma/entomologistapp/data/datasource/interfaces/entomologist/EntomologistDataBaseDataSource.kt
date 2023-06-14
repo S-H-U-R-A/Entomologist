@@ -8,6 +8,6 @@ interface EntomologistDataBaseDataSource {
 
     fun getEntomologist(id: Int) : Flow<EntomologistEntity>
 
-    suspend fun insertEntomologist(entomologist: EntomologistEntity)
+    suspend fun insertEntomologist(entomologist: EntomologistEntity): Long
 
 }

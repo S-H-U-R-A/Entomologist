@@ -20,13 +20,11 @@ class ImageRepositoryImpl @Inject constructor(
         uri: Uri,
         type: TypeUser,
         nameInsect: String?
-    ): String? = withContext(dispatcherIO){
-        appStorageDataSourceImpl.savePhotoInExternalStorage(
-            uri,
-            type,
-            nameInsect
-        )
-    }
+    ): String? = appStorageDataSourceImpl.savePhotoInExternalStorage(
+        uri,
+        type,
+        nameInsect
+    )
 
 
 }

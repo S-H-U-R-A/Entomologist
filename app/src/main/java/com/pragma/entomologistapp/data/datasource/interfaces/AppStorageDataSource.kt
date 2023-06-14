@@ -6,11 +6,9 @@ import java.io.File
 
 
 interface AppStorageDataSource {
-
     suspend fun savePhotoInExternalStorage(
         uriImage: Uri,
         type: TypeUser,
         nameInsect:String?
     ): String?
-
 }

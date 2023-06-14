@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface InsectDataBaseDataSource {
 
-    fun getAllInsects(): Flow<List<InsectEntity>>
+    fun getAllInsectsOnlyName(): Flow< List<String> >
+
+    suspend fun insertAndGetInsect(insect: InsectEntity): InsectEntity
 
 }

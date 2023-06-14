@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface EntomologistDao {
 
-    @Query("SELECT * FROM ${EntomologistEntity.TABLE_NAME} WHERE id = :idEntomologist ")
+    @Query("SELECT * FROM ${EntomologistEntity.TABLE_NAME} WHERE id = :idEntomologist")
     fun getEntomologist(idEntomologist: Int): Flow<EntomologistEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEntomologist(entomologist: EntomologistEntity)
+    suspend fun insertEntomologist(entomologist: EntomologistEntity): Long
 
 }

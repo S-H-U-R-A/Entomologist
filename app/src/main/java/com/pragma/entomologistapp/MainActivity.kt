@@ -3,22 +3,18 @@ package com.pragma.entomologistapp
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.pragma.entomologistapp.domain.usecases.entomologist.GetEntomologistPreferencesUseCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.GetFirstTimeEntomologistPreferencesUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    @Inject lateinit var entomologistPreferencesUseCase: GetEntomologistPreferencesUseCase
+    @Inject lateinit var getFirstTimeEntomologistPreferencesUseCase: GetFirstTimeEntomologistPreferencesUseCase
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -39,45 +35,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         appBarConfiguration = AppBarConfiguration( navController.graph )
         setupActionBarWithNavController( navController, appBarConfiguration)
 
-
-        canNavigateNewRegister()
-
-    }
-
-    //SE VALIDA SI ES LA PRIMERA VEZ QUE USUARIO ENTRA EN LA APLICACIÓN
-    private fun canNavigateNewRegister() {
-
-        //SE CONFIGURA NUEVO START DESTINATION
-
-        lifecycleScope.launch {
-
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-
-                entomologistPreferencesUseCase().collect{ firstTime: Boolean ->
-
-                    //RECUPERAMOS EL GRAFO DE NAVEGACIÓN
-                    val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-
-                    if (firstTime)
-                        graph.setStartDestination(R.id.recordFragment )
-                    /*
-                    else
-                        graph.setStartDestination(R.id.signUpFragment )
-                    */
-
-                    navController.graph = graph
-
-                }
-
-            }
-
-        }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
 }

@@ -11,11 +11,19 @@ class EntomologistDataStorageDataSourceImpl @Inject constructor(
 ) : EntomologistDataStorageDataSource {
 
     override fun getPreferencesFirstTime(): Flow<Boolean> {
-        return entomologistPreferences.data
+        return entomologistPreferences.getFirstTime()
     }
 
-    override suspend fun savePreferencesFirstTime(data: Boolean) {
-       entomologistPreferences.saveData(data)
+    override suspend fun savePreferencesFirstTime(firstTime: Boolean) {
+       entomologistPreferences.saveFirstTime(firstTime)
+    }
+
+    override fun getPreferencesIdUser(): Flow<Long> {
+       return entomologistPreferences.getIdUser()
+    }
+
+    override suspend fun savePreferencesIdUser(id: Long) {
+        entomologistPreferences.saveIdUser(id)
     }
 
 

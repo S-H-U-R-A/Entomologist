@@ -10,8 +10,13 @@ class InsectDataBaseDataSourceImpl @Inject constructor(
     private val insectDao: InsectDao
 ) : InsectDataBaseDataSource {
 
-    override fun getAllInsects(): Flow< List<InsectEntity> > {
-        return insectDao.getAllInsects()
+    override fun getAllInsectsOnlyName(): Flow< List<String> > {
+        return insectDao.getAllInsectsOnlyName()
     }
+
+    override suspend fun insertAndGetInsect(insect: InsectEntity): InsectEntity {
+        return insectDao.insertAndGetInsect(insect)
+    }
+
 
 }

@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -15,14 +15,15 @@ import javax.inject.Inject
 
 class EntomologistPreferences @Inject constructor(
     private val dataStore: DataStore<Preferences>
-) : DataPreferences<Boolean> {
+) {
 
     companion object PreferencesKey {
         val KEY_FIRST_TIME = booleanPreferencesKey("key_first_time")
+        val KEY_ID_USER = longPreferencesKey("key_id_user")
     }
 
-    override val data: Flow<Boolean>
-        get() = dataStore.data
+    fun getFirstTime() : Flow<Boolean>{
+        return dataStore.data
             .catch {
                 if (it is IOException) {
                     it.printStackTrace()
@@ -32,13 +33,36 @@ class EntomologistPreferences @Inject constructor(
                 } else throw it
             }
             .map { preferences ->
-                preferences[KEY_FIRST_TIME] ?: false
+                preferences[KEY_FIRST_TIME] ?: true
             }
+    }
 
-    override suspend fun saveData(data: Boolean){
+    fun getIdUser() : Flow<Long>{
+        return dataStore.data
+            .catch {
+                if (it is IOException) {
+                    it.printStackTrace()
+                    emit(
+                        emptyPreferences()
+                    )
+                } else throw it
+            }
+            .map { preferences ->
+                preferences[KEY_ID_USER] ?: 0
+            }
+    }
+
+    suspend fun saveFirstTime(firstTime: Boolean) {
         dataStore.edit { mutablePreferences ->
-            mutablePreferences[KEY_FIRST_TIME] = data
+            mutablePreferences[KEY_FIRST_TIME] = firstTime
         }
     }
+
+    suspend fun saveIdUser(id: Long) {
+        dataStore.edit { mutablePreferences ->
+            mutablePreferences[KEY_ID_USER] = id
+        }
+    }
+
 
 }

@@ -28,7 +28,7 @@ class PhotoUploadFragment : Fragment() {
             findNavController().previousBackStackEntry?.savedStateHandle?.set("uriNewPhoto", uri.toString() )
             findNavController().popBackStack()
         } else {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("uriNewPhoto", null )
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("uriNewPhoto", args.uriPhoto )
             findNavController().popBackStack()
         }
     }
