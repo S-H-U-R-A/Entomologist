@@ -33,6 +33,7 @@
         app:boxCornerRadiusTopEnd="25dp"
         app:boxCornerRadiusBottomEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
+        app:boxBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ib_avatar"
         app:layout_constraintEnd_toEndOf="parent">
@@ -96,16 +97,16 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_skip"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="89dp"
+        android:layout_marginTop="88dp"
         android:text="Omitir"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        app:layout_constraintStart_toStartOf="@+id/cl_content_location"
-        app:layout_constraintTop_toBottomOf="@id/cl_content_location"
         app:layout_constraintEnd_toStartOf="@+id/mb_save"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/cl_content_location"
+        app:layout_constraintTop_toBottomOf="@id/cl_content_location" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_save"

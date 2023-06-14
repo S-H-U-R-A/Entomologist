@@ -8,6 +8,10 @@ data class EntomologistDomain(
     val urlPhoto: String
 ){
 
+    companion object {
+        const val IMAGE_DEFAULT = "WITHOUT PHOTO"
+    }
+
     fun toEntity(): EntomologistEntity{
         return EntomologistEntity(
             this.id,
@@ -15,6 +19,5 @@ data class EntomologistDomain(
             this.urlPhoto
         )
     }
-
 
 }

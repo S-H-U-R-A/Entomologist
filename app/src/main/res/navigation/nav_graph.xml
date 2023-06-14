@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signUpFragment">
+    app:startDestination="@id/recordFragment">
 
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.pragma.entomologistapp.ui.signup.SignUpFragment"
-        android:label="fragment_sign_up"
+        android:label=""
         tools:layout="@layout/fragment_sign_up" >
 
         <action
@@ -21,16 +21,12 @@
             app:nullable="true"
             android:defaultValue="null"/>
 
-        <action
-            android:id="@+id/action_signUpFragment_to_recordFragment"
-            app:destination="@id/recordFragment" />
-
     </fragment>
 
     <fragment
         android:id="@+id/photoUploadFragment"
         android:name="com.pragma.entomologistapp.ui.profile.PhotoUploadFragment"
-        android:label="fragment_photo_upload"
+        android:label=""
         tools:layout="@layout/fragment_photo_upload" >
 
         <argument
@@ -43,18 +39,39 @@
 
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.pragma.entomologistapp.ui.registerInsect.RecordFragment"
-        android:label="fragment_record"
+        android:name="com.pragma.entomologistapp.ui.recordInsect.RecordFragment"
+        android:label=""
         tools:layout="@layout/fragment_record" >
+
         <action
             android:id="@+id/action_recordFragment_to_formInsectFragment"
             app:destination="@id/formInsectFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/formInsectFragment"
         android:name="com.pragma.entomologistapp.ui.formInsect.FormInsectFragment"
-        android:label="fragment_form_insect"
-        tools:layout="@layout/fragment_form_insect" />
+        android:label=""
+        tools:layout="@layout/fragment_form_insect" >
+
+        <action
+            android:id="@+id/action_formInsectFragment_to_countInsectFragment"
+            app:destination="@id/countInsectFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/countInsectFragment"
+        android:name="com.pragma.entomologistapp.ui.countInsect.CountInsectFragment"
+        android:label=""
+        tools:layout="@layout/fragment_count_insect" >
+
+        <argument
+            android:name="insect"
+            app:argType="com.pragma.entomologistapp.domain.model.InsectDomain" />
+
+    </fragment>
 
 
 </navigation>
