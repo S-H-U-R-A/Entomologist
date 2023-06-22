@@ -1,7 +1,25 @@
 <resources>
+
     <string name="app_name">EntomologistApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name_user">Nombre</string>
     <string name="helper_required">Campo requerido</string>
+
+    <!-- MESSAGE'S LOCATION -->
+    <string name="explain_user_feature_location">Sin la ubicación precisa, no podremos indicarte en que lugar encontraste la muestra.</string>
+    <string name="explanation_location_permission">
+        Para registrar un nuevo insecto, necesitamos acceder a tu ubicación precisa.
+        Esto nos permitirá mostrar en el mapa la ubicación exacta donde encontraste el insecto.
+        Tu privacidad es importante para nosotros y la ubicación se utilizará únicamente con ese propósito.
+        Por favor, otorga el permiso de ubicación precisa para continuar.
+    </string>
+    <string name="message_enable_location">Por favor, activa la funcionalidad de ubicación en tu dispositivo.</string>
+    <string name="error_getting_location">Ocurrió un error inesperado al intentar obtener la ubicación precisa, inténtalo nuevamente.</string>
+
+    <!-- ALERT DIALOG BUTTONS -->
+    <string name="dialog_button_negative">Cancelar</string>
+    <string name="dialog_button_positive">Aceptar</string>
+
+
+
 </resources>

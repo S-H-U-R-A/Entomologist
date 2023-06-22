@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -123,7 +123,6 @@ class FormInsectFragment : Fragment() {
     }
 
     private fun handleRegisterInsect(){
-        Log.d("ImageValue", imageInsectUriSelected.toString())
         if(imageInsectUriSelected != null){
             with(binding){
                 registerInsect(
@@ -197,7 +196,7 @@ class FormInsectFragment : Fragment() {
     }
 
     private fun handleValidateFields(): Boolean {
-        var isValid: Boolean = true
+        var isValid = true
 
         if( binding.mactvNameInsect.text.toString().trim().isEmpty() ){
             isValid = false

@@ -2,9 +2,10 @@ package com.pragma.entomologistapp.util
 
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 
 //Clase auxiliar que permite solicitar los permisos
-class PermissionRequestHelper<T: ComponentActivity>(
+class PermissionRequestHelper<T: Fragment>(
     fragment: T,
     private val permission: String,
     onDenied: () -> Unit = {},

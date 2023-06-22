@@ -28,16 +28,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
-    //VIEWBINDING
-    private var _binding: FragmentSignUpBinding? = null
-    private val binding get() = _binding!!
-
-    //URI PARA EL SIGUIENTE FRAGMENTO
-    private var imageUriSelected: String? = null
-
-    //VIEWMODEL
-    private val viewModel: SignUpViewModel by viewModels()
-
     //LAUNCHER PERMISSION LOCATION
     private val locationPermission =  PermissionMultipleRequestHelper<SignUpFragment>(
         this,
@@ -54,6 +44,18 @@ class SignUpFragment : Fragment() {
             //Toast.makeText( requireContext(), "Toca insistirle", Toast.LENGTH_SHORT).show()
         }
     )
+
+    //VIEWBINDING
+    private var _binding: FragmentSignUpBinding? = null
+    private val binding get() = _binding!!
+
+    //URI PARA EL SIGUIENTE FRAGMENTO
+    private var imageUriSelected: String? = null
+
+    //VIEWMODEL
+    private val viewModel: SignUpViewModel by viewModels()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

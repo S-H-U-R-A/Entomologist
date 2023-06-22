@@ -2,17 +2,15 @@ package com.pragma.entomologistapp.data.repository
 
 import android.net.Uri
 import com.pragma.entomologistapp.core.TypeUser
-import com.pragma.entomologistapp.data.datasource.interfaces.AppStorageDataSource
+import com.pragma.entomologistapp.data.datasource.interfaces.AppDataSource
 import com.pragma.entomologistapp.di.IoDispatcher
 import com.pragma.entomologistapp.domain.repository.ImagesRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 class ImageRepositoryImpl @Inject constructor(
-    private val appStorageDataSourceImpl: AppStorageDataSource,
+    private val appDataSourceImpl: AppDataSource,
     @IoDispatcher private val dispatcherIO: CoroutineDispatcher
 ) : ImagesRepository {
 
@@ -20,7 +18,7 @@ class ImageRepositoryImpl @Inject constructor(
         uri: Uri,
         type: TypeUser,
         nameInsect: String?
-    ): String? = appStorageDataSourceImpl.savePhotoInExternalStorage(
+    ): String? = appDataSourceImpl.savePhotoInExternalStorage(
         uri,
         type,
         nameInsect
