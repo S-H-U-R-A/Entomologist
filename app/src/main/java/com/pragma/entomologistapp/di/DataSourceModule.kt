@@ -1,11 +1,11 @@
 package com.pragma.entomologistapp.di
 
-import com.pragma.entomologistapp.data.datasource.AppStorageDataSourceImpl
+import com.pragma.entomologistapp.data.datasource.AppDataSourceImpl
 import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataBaseDataSource
 import com.pragma.entomologistapp.data.datasource.entomologist.EntomologistDataBaseDataSourceImpl
 import com.pragma.entomologistapp.data.datasource.entomologist.EntomologistDataStorageDataSourceImpl
 import com.pragma.entomologistapp.data.datasource.insect.InsectDataBaseDataSourceImpl
-import com.pragma.entomologistapp.data.datasource.interfaces.AppStorageDataSource
+import com.pragma.entomologistapp.data.datasource.interfaces.AppDataSource
 import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataStorageDataSource
 import com.pragma.entomologistapp.data.datasource.interfaces.insect.InsectDataBaseDataSource
 import dagger.Binds
@@ -30,8 +30,8 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindAppStorageDataSource(
-        appStorageDataSource: AppStorageDataSourceImpl
-    ) : AppStorageDataSource
+        appDataSource: AppDataSourceImpl
+    ) : AppDataSource
 
     @Binds
     abstract fun bindInsectDataBaseDataSource(

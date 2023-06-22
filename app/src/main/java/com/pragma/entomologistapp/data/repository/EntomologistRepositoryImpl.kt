@@ -1,7 +1,6 @@
 package com.pragma.entomologistapp.data.repository
 
 import android.net.Uri
-import android.util.Log
 import com.pragma.entomologistapp.core.TypeUser
 import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataBaseDataSource
 import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.EntomologistDataStorageDataSource
