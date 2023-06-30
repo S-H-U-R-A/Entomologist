@@ -6,6 +6,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.Tasks
@@ -55,19 +56,29 @@ class AppDataSourceImpl @Inject constructor(
         return null
     }
 
+
     override suspend fun getPlaceNameFromCoordinates(location: Location): String{
 
         val deferred = CompletableDeferred<String>()
 
-        Geocoder(context).getFromLocation(
-            location.latitude,
-            location.longitude,
-            1
-        ) { listAddress: MutableList<Address> ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Geocoder(context).getFromLocation(
+                    location.latitude,
+                    location.longitude,
+                    1
+                ) { listAddress: MutableList<Address> ->
 
-            deferred.complete( listAddress.first().locality ?: "Sin Ciudad" )
+                    deferred.complete( listAddress.first().locality ?: "Sin Ciudad" )
 
-        }
+                }
+            }else {
+                val listAddress = Geocoder(context).getFromLocation(
+                    location.latitude,
+                    location.longitude,
+                    1
+                )
+                deferred.complete( listAddress?.first()?.locality ?: "Sin Ciudad" )
+            }
 
         return deferred.await()
 

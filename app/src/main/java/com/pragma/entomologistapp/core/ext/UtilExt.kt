@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -20,6 +21,7 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
+import com.pragma.entomologistapp.MainActivity
 
 fun Int.formatTwoDigits(): String {
     return String.format("%02d", this)
@@ -59,6 +61,7 @@ fun Context.checkLocationServicesEnabled(): Boolean {
 
     return false
 }
+
 fun Context.checkMultiplePermissionGranted(vararg permissions: String) : Boolean{
     permissions.forEach { permission ->
         if( ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED ) {
@@ -72,11 +75,8 @@ fun Context.checkPermissionGranted(permission: String) : Boolean{
     return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED
 }
 
-fun Context.showSimpleMessageSnackBar(
-    view: View,
-    @StringRes message: Int,
-){
-    Snackbar.make(this, view, getString(message) , Snackbar.LENGTH_SHORT).show()
+fun Context.showSimpleMessageSnackBar(view: View, @StringRes message: Int){
+    Snackbar.make(this, view, getString(message) , Snackbar.LENGTH_LONG).show()
 }
 
 fun Context.showSnackBarSettings(
@@ -98,4 +98,8 @@ fun Context.showSnackBarSettings(
         }.let(::startActivity)
 
     }.show()
+}
+
+fun Fragment.showOrHideDialogLoading(showDialog: Boolean){
+    (this.requireActivity() as MainActivity).showOrHideDialogLoading(showDialog)
 }

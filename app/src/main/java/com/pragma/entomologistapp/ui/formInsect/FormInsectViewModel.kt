@@ -7,7 +7,7 @@ import com.pragma.entomologistapp.core.TypeUser
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.domain.model.InsectDomain
 import com.pragma.entomologistapp.domain.usecases.entomologist.GetEntomologistDataBaseUseCase
-import com.pragma.entomologistapp.domain.usecases.entomologist.GetIdEntomologistPreferencesUSeCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.GetIdEntomologistPreferencesUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.GetInsectsNamesUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.SaveImageInsectAppUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.SaveInsectDataBaseUseCase
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormInsectViewModel @Inject constructor(
-    private val getIdEntomologistPreferencesUSeCase: GetIdEntomologistPreferencesUSeCase,
+    private val getIdEntomologistPreferencesUseCase: GetIdEntomologistPreferencesUseCase,
     private val getEntomologistDataBaseUseCase: GetEntomologistDataBaseUseCase,
     private val getInsectsNamesUseCase: GetInsectsNamesUseCase,
     private val saveImageInsectAppUseCase: SaveImageInsectAppUseCase,
@@ -59,11 +59,15 @@ class FormInsectViewModel @Inject constructor(
 
     fun loadUser() {
         viewModelScope.launch {
-            getIdEntomologistPreferencesUSeCase().collect { idUser ->
+            //LOADING ON
+            _uiState.update { uiState -> uiState.copy(isLoading = true) }
+            //GET ENTOMOLOGIST
+            getIdEntomologistPreferencesUseCase().collect { idUser ->
                 getEntomologistDataBaseUseCase(idUser.toInt()).collect { entomologist ->
-                    if (entomologist.urlPhoto != EntomologistDomain.IMAGE_DEFAULT) {
+                    if ( entomologist.urlPhoto != EntomologistDomain.IMAGE_DEFAULT ) {
                         _uiState.update { state ->
                             state.copy(
+                                isLoading = false,
                                 photoEntomologist = entomologist.urlPhoto
                             )
                         }
@@ -80,6 +84,9 @@ class FormInsectViewModel @Inject constructor(
         onSaveInsect: (insect: InsectDomain) -> Unit
     ) {
         viewModelScope.launch {
+            //LOADING ON
+            _uiState.update { uiState -> uiState.copy(isLoading = true) }
+
             val uriStorage: String? = saveImageInsectAppUseCase(
                 image,
                 TypeUser.INSECT,
@@ -94,8 +101,11 @@ class FormInsectViewModel @Inject constructor(
             )
 
             val insectInserted: InsectDomain = saveInsectDataBaseUseCase(insect)
-
+            //LOADING OFF
+            _uiState.update { uiState -> uiState.copy(isLoading = true) }
+            //NAVIGATE
             onSaveInsect(insectInserted)
+
         }
     }
 
@@ -111,6 +121,7 @@ class FormInsectViewModel @Inject constructor(
 }
 
 data class FormInsectUiState(
+    val isLoading: Boolean= false,
     val canNavigate: Boolean = false,
     val photoEntomologist: String = EntomologistDomain.IMAGE_DEFAULT,
     val listInsect: List<String> = emptyList(),

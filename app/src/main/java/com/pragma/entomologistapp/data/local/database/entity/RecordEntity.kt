@@ -5,12 +5,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.pragma.entomologistapp.domain.model.RecordDomain
+import java.util.Calendar
 
 @Entity(
     tableName = RecordEntity.TABLE_NAME,
-    indices = [
-        Index(value = ["id_entomologist", "id_insect", "id_geolocation"] )
-    ],
     foreignKeys = [
         ForeignKey(
             EntomologistEntity::class,
@@ -27,15 +26,22 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["id_geolocation"]
         )
+    ],
+    indices = [
+        Index(value = ["id_entomologist"] ),
+        Index(value = ["id_insect"]),
+        Index(value = ["id_geolocation"])
     ]
 )
 data class RecordEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int?,
     @ColumnInfo(name = "comment")
     val comment: String,
     @ColumnInfo(name = "count_insect")
     val countInsect: Int,
+    @ColumnInfo(name = "date")
+    val date: Calendar,
     @ColumnInfo(name = "id_entomologist")
     val idEntomologist: Int,
     @ColumnInfo(name = "id_insect")
@@ -46,4 +52,15 @@ data class RecordEntity(
     companion object {
         const val TABLE_NAME = "record_table"
     }
+
+    fun toEntity() : RecordDomain = RecordDomain(
+        this.id,
+        this.comment,
+        this.countInsect,
+        this.date,
+        this.idEntomologist,
+        this.idInsect,
+        this.idGeolocation
+    )
+
 }

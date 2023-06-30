@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class GetIdEntomologistPreferencesUSeCase @Inject constructor(
+class GetIdEntomologistPreferencesUseCase @Inject constructor(
     private val entomologistRepository: EntomologistRepository
 ) {
 

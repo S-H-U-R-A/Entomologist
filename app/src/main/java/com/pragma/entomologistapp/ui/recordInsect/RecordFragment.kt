@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pragma.entomologistapp.R
+import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.databinding.FragmentRecordBinding
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,8 +64,9 @@ class RecordFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED){
-                viewModel.uiState.collect { state ->
-                    handlePhotoUser( state.imageEntomologist )
+                viewModel.uiState.collect { stateUi ->
+                    handlePhotoUser( stateUi.imageEntomologist )
+                    handleLoading( stateUi.isLoading )
                 }
             }
         }
@@ -95,6 +96,10 @@ class RecordFragment : Fragment() {
 
         }
 
+    }
+
+    private fun handleLoading(canShowLoading: Boolean) {
+        showOrHideDialogLoading(canShowLoading)
     }
 
     override fun onDestroy() {

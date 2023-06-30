@@ -1,6 +1,6 @@
 package com.pragma.entomologistapp.domain.repository
 
-interface LocationRepository {
+interface ServiceLocationRepository {
 
     suspend fun checkLocationServicesEnabled() : Boolean
 

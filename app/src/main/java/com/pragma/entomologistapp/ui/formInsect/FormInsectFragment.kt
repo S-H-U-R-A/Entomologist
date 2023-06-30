@@ -3,7 +3,6 @@ package com.pragma.entomologistapp.ui.formInsect
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pragma.entomologistapp.core.ext.pickMediaLauncher
+import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.validateFields
 import com.pragma.entomologistapp.databinding.FragmentFormInsectBinding
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
@@ -112,11 +112,14 @@ class FormInsectFragment : Fragment() {
     private fun initObservers() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.uiState.collect { state ->
-                    handleListSuggestions( state.listInsect )
-                    handlePhotoUser(state.photoEntomologist)
-                    handleNavigation( state.canNavigate )
-                    handleButtons( state.isVisibleButtonSave, state.isVisibleButtonSelected )
+                viewModel.uiState.collect { uiState ->
+                    with(uiState){
+                        handleListSuggestions(listInsect)
+                        handlePhotoUser( photoEntomologist)
+                        handleNavigation( canNavigate )
+                        handleButtons( isVisibleButtonSave, isVisibleButtonSelected )
+                        handleLoading( isLoading )
+                    }
                 }
             }
         }
@@ -157,13 +160,8 @@ class FormInsectFragment : Fragment() {
     }
 
     private fun handleListSuggestions(listInsect: List<String>) {
-
         //SE GUARDA LA LISTA DE INSECTOS
         listNameInsect = listInsect
-
-        /*val suggestions: List<String> = listInsect.map { insects ->
-            insects.name
-        }*/
         binding.mactvNameInsect.setAdapter(
             ArrayAdapter(
                 requireContext(),
@@ -171,7 +169,6 @@ class FormInsectFragment : Fragment() {
                 listInsect
             )
         )
-
     }
 
     private fun handleButtons(buttonSave: Boolean, buttonSelected: Boolean) {
@@ -207,6 +204,10 @@ class FormInsectFragment : Fragment() {
         }
 
         return isValid
+    }
+
+    private fun handleLoading(canShowLoading: Boolean) {
+       showOrHideDialogLoading(canShowLoading)
     }
 
     override fun onResume() {

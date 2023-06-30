@@ -1,27 +1,33 @@
 package com.pragma.entomologistapp.ui.countInsect
 
-import android.util.Log
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pragma.entomologistapp.domain.model.GeolocationDomain
 import com.pragma.entomologistapp.domain.model.InsectDomain
-import com.pragma.entomologistapp.domain.usecases.app.GetCurrentLocationAppUseCase
+import com.pragma.entomologistapp.domain.model.RecordDomain
+import com.pragma.entomologistapp.domain.usecases.app.GetServicesCurrentLocationAppUseCase
 import com.pragma.entomologistapp.domain.usecases.app.GetServicesLocationAppUseCase
+import com.pragma.entomologistapp.domain.usecases.entomologist.GetIdEntomologistPreferencesUseCase
+import com.pragma.entomologistapp.domain.usecases.geolocation.SaveAndGetGeolocationDataBaseUseCase
+import com.pragma.entomologistapp.domain.usecases.record.SaveRecordDataBaseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class CountInsectViewModel @Inject constructor(
+    private val getIdEntomologistPreferencesUseCase: GetIdEntomologistPreferencesUseCase,
     private val getServicesLocationAppUseCase: GetServicesLocationAppUseCase,
-    private val getCurrentLocationAppUseCase: GetCurrentLocationAppUseCase
+    private val getServicesCurrentLocationAppUseCase: GetServicesCurrentLocationAppUseCase,
+    private val saveAndGetGeolocationDataBaseUseCase: SaveAndGetGeolocationDataBaseUseCase,
+    private val saveRecordDataBaseUseCase: SaveRecordDataBaseUseCase
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<CountInsectUiState> = MutableStateFlow(CountInsectUiState())
@@ -45,9 +51,9 @@ class CountInsectViewModel @Inject constructor(
         }
     }
 
-    fun sendMessageEntomologist( message: LocationMessage ){
+    fun sendMessageEntomologist( message: UserMessages ){
         _uiState.update { actualSate ->
-            val messageError: List<LocationMessage> =
+            val messageError: List<UserMessages> =
                 actualSate.messageEntomologist + message
 
             actualSate.copy(
@@ -56,7 +62,7 @@ class CountInsectViewModel @Inject constructor(
         }
     }
 
-    fun deleteMessageEntomologist( message: LocationMessage ){
+    fun deleteMessageEntomologist( message: UserMessages ){
         _uiState.update { actualState ->
             val newListWithOutMessage =
                 actualState.messageEntomologist.filterNot {
@@ -77,29 +83,64 @@ class CountInsectViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getCurrentLocationComplete(): Triple<Double, Double, String>?{
-        val currentLocationComplete: Deferred<Triple<Double, Double, String>?> = viewModelScope.async {
-            getCurrentLocationAppUseCase()
-        }
-        return  currentLocationComplete.await()
-    }
-
-    //FALTAN DATOS, ID INSECTO, ID USUARIO, CONTEO, COMENTARIOS
-    fun enterInsectCount(){
+    fun enterInsectCount(idInsect: Int, comment: String, actionNavigate: () -> Unit){
         viewModelScope.launch {
-            val dataLocationComplete = getCurrentLocationComplete()
+            //LOADING ON
+            _uiState.update { uiState -> uiState.copy(isLoading = true) }
+            //GET INFORMATION OF SERVICES LOCATION
+            val dataLocationComplete: Triple<Double, Double, String>? = getCurrentLocationComplete()
             if(dataLocationComplete != null){
-                //EMPEZAMOS EL PROCESO DE GUARDADAR LA INFO
-
-
+                //OBTENER EL USUARIO
+                getIdEntomologistPreferencesUseCase().collect{ idUser ->
+                    if( idUser.toInt() != 0){
+                        //MAKE AND REGISTER GEOLOCATION
+                        val geolocationData = createGeolocationData(dataLocationComplete.first, dataLocationComplete.second, dataLocationComplete.third)
+                        val idGeolocation: Long = saveAndGetGeolocationDataBaseUseCase( geolocationData )
+                        //REGISTER ENTITY RECORD
+                        val recordDomain  = createRecordData( comment, uiState.value.countInsect, Calendar.getInstance(), idUser.toInt(), idInsect, idGeolocation.toInt())
+                        saveRecordDataBaseUseCase( recordDomain )
+                        //LOADING OFF
+                        _uiState.update { uiState -> uiState.copy(isLoading = false) }
+                        //NAVIGATE TO LIST
+                        actionNavigate()
+                    }else{
+                        sendMessageEntomologist( UserMessages.USER_NOT_FOUND )
+                    }
+                }
             }else {
                 //LE INDICAMOS AL USUARIO QUE HUBO UN ERROR AL OBTENER LA LOCALIZACIÓN Y QUE LO INTENTE DE NUEVO
-                sendMessageEntomologist( LocationMessage.GET_LOCATION_ERROR )
+                sendMessageEntomologist( UserMessages.GET_LOCATION_ERROR )
             }
-
         }
     }
 
+    private suspend fun getCurrentLocationComplete(): Triple<Double, Double, String>?{
+        val currentLocationComplete: Deferred< Triple<Double, Double, String>?> = viewModelScope.async {
+            getServicesCurrentLocationAppUseCase()
+        }
+        return currentLocationComplete.await()
+    }
+
+    private fun createGeolocationData(latitude: Double, longitude: Double, cityName: String) : GeolocationDomain {
+        return  GeolocationDomain(
+            null,
+            latitude,
+            longitude,
+            cityName
+        )
+    }
+
+    private fun createRecordData(comment: String, countInsect: Int, date: Calendar, idUser: Int, idInsect: Int, idGeolocation: Int ) : RecordDomain {
+        return RecordDomain(
+            null,
+            comment,
+            countInsect,
+            date,
+            idUser,
+            idInsect,
+            idGeolocation
+        )
+    }
 
 }
 
@@ -107,7 +148,7 @@ data class CountInsectUiState (
     val isLoading: Boolean = false,
     val insect: InsectDomain? = null,
     val countInsect: Int = 0,
-    var messageEntomologist: List<LocationMessage> = emptyList()
+    var messageEntomologist: List<UserMessages> = emptyList()
 )
 
 //VALOR DE ESTADO QUE DEPENDE DE OTRO VALOR
