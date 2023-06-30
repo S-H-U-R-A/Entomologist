@@ -7,6 +7,7 @@ import com.pragma.entomologistapp.data.local.database.dao.EntomologistDao
 import com.pragma.entomologistapp.data.local.database.dao.GeolocationDao
 import com.pragma.entomologistapp.data.local.database.dao.InsectDao
 import com.pragma.entomologistapp.data.local.database.dao.RecordDao
+import com.pragma.entomologistapp.data.local.database.dao.RecordInsectGeolocationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,6 +57,10 @@ object DataBaseModule {
     @Provides
     fun provideRecordDao(dataBase: EntomologyDataBase): RecordDao{
         return dataBase.recordDao()
+    }
+
+    fun provideRecordInsectGeolocation(dataBase: EntomologyDataBase) : RecordInsectGeolocationDao{
+        return dataBase.recordInsectGeolocationDao()
     }
 
 }

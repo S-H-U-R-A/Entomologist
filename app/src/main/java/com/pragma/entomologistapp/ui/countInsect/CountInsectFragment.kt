@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,16 +13,26 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.pragma.entomologistapp.MainActivity
 import com.pragma.entomologistapp.R
 import com.pragma.entomologistapp.core.ext.checkMultiplePermissionGranted
 import com.pragma.entomologistapp.core.ext.formatTwoDigits
+import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.showSimpleMessageSnackBar
 import com.pragma.entomologistapp.databinding.FragmentCountInsectBinding
 import com.pragma.entomologistapp.domain.model.InsectDomain
-import com.pragma.entomologistapp.ui.countInsect.LocationMessage.*
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.GET_LOCATION_ERROR
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_EXPLANATION_PERMISSION
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_NO_USABLE
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_PERMISSION_DENIED
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.NO_COMMENT_INSECT
+import com.pragma.entomologistapp.ui.countInsect.UserMessages.USER_NOT_FOUND
+import com.pragma.entomologistapp.util.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -67,7 +76,6 @@ class CountInsectFragment : Fragment() {
     private fun initComponents() {
         //SE RECUPERA EL INSECTO
         insect = args.insect
-        //SE RECUPERA EL ID DEL ENTOMÓLOGO
 
         //SE CARGAN LOS DATOS DEL INSECTO
         setDataInsect(insect!!)
@@ -100,6 +108,7 @@ class CountInsectFragment : Fragment() {
                         handleButtonSave( stateUi.isVisibleButtonSave )
                         handleComment( stateUi.isVisibleComment )
                         handleMessagesEntomologist( stateUi.messageEntomologist )
+                        handleLoading( stateUi.isLoading )
                     }
             }
         }
@@ -128,7 +137,7 @@ class CountInsectFragment : Fragment() {
         binding.tilComment.isVisible = visibleComment
     }
 
-    private fun handleMessagesEntomologist(messageEntomologist: List<LocationMessage>) {
+    private fun handleMessagesEntomologist(messageEntomologist: List<UserMessages>) {
         messageEntomologist.forEach { messageStateUi ->
             when( messageStateUi ){
                 LOCATION_NO_USABLE -> {
@@ -163,6 +172,15 @@ class CountInsectFragment : Fragment() {
                         GET_LOCATION_ERROR.message
                     )
                 }
+                NO_COMMENT_INSECT -> {
+                    binding.tilComment.error = getString( NO_COMMENT_INSECT.message )
+                }
+                USER_NOT_FOUND -> {
+                    requireContext().showSimpleMessageSnackBar(
+                        binding.root,
+                        USER_NOT_FOUND.message
+                    )
+                }
             }
             //APENAS SE MUESTRA EL MENSAJE, SE ELIMINA DEL ESTADO
             viewModel.deleteMessageEntomologist( messageStateUi )
@@ -186,7 +204,31 @@ class CountInsectFragment : Fragment() {
     }
 
     private fun enterInsectCount() {
-        viewModel.enterInsectCount()
+        //SI EXISTE UN COMENTARIO
+        if( validateComment() ){
+            //SI EXISTIA UN ERROR EN PANTALLA LO ELIMINAMOS
+            binding.tilComment.error = ""
+
+            viewModel.enterInsectCount(
+                insect!!.id!!,
+                binding.tietComment.text.toString(),
+            ){
+                val action: NavDirections = CountInsectFragmentDirections.actionCountInsectFragmentToRecordFragment()
+                findNavController().navigate( action )
+            }
+
+        }else{
+            viewModel.sendMessageEntomologist(NO_COMMENT_INSECT)
+        }
+
+    }
+
+    private fun validateComment() : Boolean{
+        return binding.tietComment.text.toString().trim().isNotEmpty()
+    }
+
+    private fun handleLoading(canShowLoading: Boolean) {
+        showOrHideDialogLoading(canShowLoading)
     }
 
     override fun onDestroy() {

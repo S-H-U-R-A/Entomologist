@@ -71,6 +71,12 @@
             android:name="insect"
             app:argType="com.pragma.entomologistapp.domain.model.InsectDomain" />
 
+        <action
+            android:id="@+id/action_countInsectFragment_to_recordFragment"
+            app:destination="@id/recordFragment"
+            app:popUpTo="@id/recordFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
 

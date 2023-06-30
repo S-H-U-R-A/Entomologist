@@ -2,11 +2,14 @@ package com.pragma.entomologistapp.data.local.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 
 
-@Entity(tableName = EntomologistEntity.TABLE_NAME)
+@Entity(
+    tableName = EntomologistEntity.TABLE_NAME
+)
 data class EntomologistEntity(
     @PrimaryKey(autoGenerate = true)
     val id:Int?,

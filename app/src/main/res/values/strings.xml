@@ -19,7 +19,8 @@
     <!-- ALERT DIALOG BUTTONS -->
     <string name="dialog_button_negative">Cancelar</string>
     <string name="dialog_button_positive">Aceptar</string>
-
+    <string name="no_comment_insect">Por favor ingresa un comentario</string>
+    <string name="entomologist_not_found">Entómologo no encontrado</string>
 
 
 </resources>

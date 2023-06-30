@@ -90,6 +90,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
+    //LOTTIE
+    implementation "com.airbnb.android:lottie:$lottie_version"
+
     //LOCATION
     implementation "com.google.android.gms:play-services-location:$location_play_services"
 
