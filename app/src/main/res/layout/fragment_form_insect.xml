@@ -19,16 +19,17 @@
 
         <ImageButton
             android:id="@+id/ib_avatar_insect"
-            android:background="@drawable/ic_no_avatar_insect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/round_border"
+            android:src="@drawable/round_image_button"
+            android:padding="4dp"
+            android:scaleType="centerInside"
             android:layout_marginTop="120dp"
-            android:clickable="false"
-            android:focusable="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Selección de imagen" />
+            android:importantForAccessibility="no" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_name_insect"
@@ -52,7 +53,9 @@
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/mactv_name_insect"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionDone"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +112,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_save_insect"
             android:layout_width="123dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:text="Guardar"
             android:textStyle="bold"
             android:layout_marginTop="150dp"

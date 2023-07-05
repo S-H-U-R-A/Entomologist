@@ -8,16 +8,22 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecordInsectGeolocationDao {
 
-    @Query("SELECT \n" +
-            "re.count_insect AS countInsect, \n" +
-            "re.date AS dateRecord,\n" +
-            "ins.name AS nameInsect,\n" +
-            "ins.url_photo  AS photoInsect,\n" +
-            "gt.city_name AS cityName\n" +
-            "FROM record_table AS re \n" +
-            "JOIN insect_table AS ins ON re.id_insect = ins.id\n" +
-            "JOIN geolocation_table AS gt  ON re.id_geolocation = gt.id")
-    fun loadRecordWithInsectAndGeolocation() : Flow< List<RecordInsectGeolocation>>
+    @Query(
+        """
+            SELECT
+            re.id AS idRecord,
+            re.count_insect AS countInsect, 
+            re.date AS dateRecord, 
+            ins.name AS nameInsect, 
+            ins.url_photo  AS photoInsect, 
+            gt.city_name AS cityName
+            FROM record_table AS re 
+            JOIN insect_table AS ins ON re.id_insect = ins.id 
+            JOIN geolocation_table AS gt ON re.id_geolocation = gt.id 
+            ORDER BY re.id DESC
+        """
+    )
+    fun loadRecordWithInsectAndGeolocation(): Flow< List< RecordInsectGeolocation > >
 
 
 }

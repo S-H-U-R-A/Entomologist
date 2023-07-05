@@ -4,12 +4,14 @@ import com.pragma.entomologistapp.data.repository.EntomologistRepositoryImpl
 import com.pragma.entomologistapp.data.repository.GeolocationRepositoryImpl
 import com.pragma.entomologistapp.data.repository.ImageRepositoryImpl
 import com.pragma.entomologistapp.data.repository.InsectRepositoryImpl
+import com.pragma.entomologistapp.data.repository.RecordInsectGeolocationRepositoryImpl
 import com.pragma.entomologistapp.data.repository.RecordRepositoryImpl
 import com.pragma.entomologistapp.data.repository.ServiceLocationRepositoryImpl
 import com.pragma.entomologistapp.domain.repository.EntomologistRepository
 import com.pragma.entomologistapp.domain.repository.GeolocationRepository
 import com.pragma.entomologistapp.domain.repository.ImagesRepository
 import com.pragma.entomologistapp.domain.repository.InsectRepository
+import com.pragma.entomologistapp.domain.repository.RecordInsectGeolocationRepository
 import com.pragma.entomologistapp.domain.repository.RecordRepository
 import com.pragma.entomologistapp.domain.repository.ServiceLocationRepository
 import dagger.Binds
@@ -51,6 +53,9 @@ abstract class RepositoryModule {
         serviceLocationRepositoryImpl: ServiceLocationRepositoryImpl
     ) : ServiceLocationRepository
 
-
+    @Binds
+    abstract fun bindRecordInsectGeolocation(
+        recordInsectGeolocationRepositoryImpl: RecordInsectGeolocationRepositoryImpl
+    ) : RecordInsectGeolocationRepository
 
 }

@@ -2,20 +2,24 @@ package com.pragma.entomologistapp.ui.recordInsect
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pragma.entomologistapp.R
 import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.databinding.FragmentRecordBinding
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
+import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -28,6 +32,8 @@ class RecordFragment : Fragment() {
 
     private val viewModel: RecordInsectViewModel by viewModels()
 
+    private lateinit var recordsAdapter: RecordListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,21 +44,25 @@ class RecordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initComponent()
         initObservers()
-
     }
 
     private fun initComponent() {
-
         //SE CARGA LA INFO DEL USUARIO
-        viewModel.loadUser()
-
+        viewModel.loadData()
+        //CONFIG RECYCLERVIEW
+        recordsAdapter = RecordListAdapter(){}
+        binding.rvRecords.adapter = recordsAdapter
+        //ADD INSECT
         binding.fabAdd.setOnClickListener {
-            val action = RecordFragmentDirections.actionRecordFragmentToFormInsectFragment()
+            val action: NavDirections = RecordFragmentDirections.actionRecordFragmentToFormInsectFragment()
             findNavController().navigate(action)
         }
+
+        //binding.mbReports.setOnClickListener { handleVisibilityOfRecordsAndReports(true) }
+
+        //binding.mbRecords.setOnClickListener { handleVisibilityOfRecordsAndReports(false) }
 
     }
 
@@ -62,10 +72,12 @@ class RecordFragment : Fragment() {
             handleNavigation( firstTime )
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED){
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.uiState.collect { stateUi ->
                     handlePhotoUser( stateUi.imageEntomologist )
+                    handleListRecords( stateUi.recordList )
+                    handleButtonsAndUI( stateUi.isVisibleButtonsAndShouldAdjustUi )
                     handleLoading( stateUi.isLoading )
                 }
             }
@@ -73,16 +85,29 @@ class RecordFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        //SE CARGA LA INFO DEL USUARIO
-        viewModel.loadUser()
+    private fun handleVisibilityOfRecordsAndReports(isVisibleReport: Boolean){
+        with(binding){
+            clAddInsect.isVisible = !isVisibleReport
+            rvRecords.isVisible = !isVisibleReport
+            cvReport.isVisible = isVisibleReport
+        }
+    }
+
+    private fun handleButtonsAndUI( visibleButtonsAndShouldAdjustUi: Boolean ) {
+        if(visibleButtonsAndShouldAdjustUi){
+            (binding.clAddInsect.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 32
+            binding.mbRecords.isVisible = true
+            binding.mbReports.isVisible = true
+        }
+    }
+
+    private fun handleListRecords(recordList: List<RecordInsectGeolocationDomain>) {
+        Log.d("LISTA_RECORD", recordList.toString())
+        recordsAdapter.submitList( recordList )
     }
 
     private fun handleNavigation(firstTime: Boolean) {
-        if(firstTime){
-            findNavController().navigate(R.id.signUpFragment)
-        }
+        if(firstTime) findNavController().navigate(R.id.signUpFragment)
     }
 
     private fun handlePhotoUser(imageEntomologist: String) {
@@ -92,7 +117,7 @@ class RecordFragment : Fragment() {
             Glide.with(requireContext())
                 .load( File( imageEntomologist) )
                 .circleCrop()
-                .into(binding.layoutAvatarProfile.ivAvatarUser)
+                .into( binding.layoutAvatarProfile.ivAvatarUser )
 
         }
 

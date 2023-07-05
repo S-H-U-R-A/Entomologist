@@ -58,7 +58,8 @@ object DataBaseModule {
     fun provideRecordDao(dataBase: EntomologyDataBase): RecordDao{
         return dataBase.recordDao()
     }
-
+    @Singleton
+    @Provides
     fun provideRecordInsectGeolocation(dataBase: EntomologyDataBase) : RecordInsectGeolocationDao{
         return dataBase.recordInsectGeolocationDao()
     }

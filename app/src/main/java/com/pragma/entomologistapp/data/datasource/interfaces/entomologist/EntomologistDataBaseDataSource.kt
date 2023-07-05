@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface EntomologistDataBaseDataSource {
 
-    fun getEntomologist(id: Int) : Flow<EntomologistEntity>
+    fun getEntomologist(id: Int) : Flow< EntomologistEntity >
 
-    suspend fun insertEntomologist(entomologist: EntomologistEntity): Long
+    suspend fun insertEntomologist( entomologist: EntomologistEntity ): Long
 
 }

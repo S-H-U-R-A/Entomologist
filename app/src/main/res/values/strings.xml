@@ -22,5 +22,14 @@
     <string name="no_comment_insect">Por favor ingresa un comentario</string>
     <string name="entomologist_not_found">Entómologo no encontrado</string>
 
+    <!-- CARD REPORTS -->
+    <string name="your_summary">Tu resumen</string>
+
+    <!--PLACE HOLDERS-->
+    <string name="add_comment">Agregar comentario</string>
+
+    <!--BUTTONS -->
+    <string name="save_button">Guardar</string>
+
 
 </resources>

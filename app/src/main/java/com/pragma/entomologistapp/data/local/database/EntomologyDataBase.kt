@@ -37,7 +37,6 @@ abstract class EntomologyDataBase : RoomDatabase() {
     abstract fun insectDao(): InsectDao
     abstract fun recordDao(): RecordDao
     abstract fun geolocationDao (): GeolocationDao
-
     abstract fun recordInsectGeolocationDao(): RecordInsectGeolocationDao
 
 }
