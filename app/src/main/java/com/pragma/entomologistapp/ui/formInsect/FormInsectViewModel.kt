@@ -7,7 +7,6 @@ import com.pragma.entomologistapp.core.TypeUser
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.domain.model.InsectDomain
 import com.pragma.entomologistapp.domain.usecases.entomologist.GetEntomologistDataBaseUseCase
-import com.pragma.entomologistapp.domain.usecases.entomologist.GetIdEntomologistPreferencesUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.GetInsectsNamesUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.SaveImageInsectAppUseCase
 import com.pragma.entomologistapp.domain.usecases.insect.SaveInsectDataBaseUseCase
@@ -22,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormInsectViewModel @Inject constructor(
-    private val getIdEntomologistPreferencesUseCase: GetIdEntomologistPreferencesUseCase,
     private val getEntomologistDataBaseUseCase: GetEntomologistDataBaseUseCase,
     private val getInsectsNamesUseCase: GetInsectsNamesUseCase,
     private val saveImageInsectAppUseCase: SaveImageInsectAppUseCase,
@@ -62,13 +60,13 @@ class FormInsectViewModel @Inject constructor(
             //LOADING ON
             _uiState.update { uiState -> uiState.copy(isLoading = true) }
             //GET ENTOMOLOGIST
-            getIdEntomologistPreferencesUseCase().collect { idUser ->
-                getEntomologistDataBaseUseCase(idUser.toInt()).collect { entomologist ->
-                    if ( entomologist.urlPhoto != EntomologistDomain.IMAGE_DEFAULT ) {
+            getEntomologistDataBaseUseCase(null).collect { entomologist ->
+                entomologist?.let { ento ->
+                    if ( ento.urlPhoto != EntomologistDomain.IMAGE_DEFAULT ) {
                         _uiState.update { state ->
                             state.copy(
                                 isLoading = false,
-                                photoEntomologist = entomologist.urlPhoto
+                                photoEntomologist = ento.urlPhoto
                             )
                         }
                     }

@@ -16,7 +16,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="240dp"
+        android:visibility="visible"
         android:background="@color/color_surface_variant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,23 +61,75 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_records"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="17dp"
         android:layout_marginHorizontal="26dp"
         android:layout_marginBottom="16dp"
+        tools:listitem="@layout/item_list_insect"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_add_insect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mb_reports"
-        tools:listitem="@layout/item_list_insect"
     />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_report"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="176dp"
+        android:backgroundTint="?attr/colorSurfaceVariant"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="1dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_avatar_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mb_reports">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_header_report"
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:paddingHorizontal="24dp"
+                android:gravity="center_vertical|start"
+                android:text="@string/your_summary"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_reports"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mtv_header_report"
+                app:layout_constraintVertical_bias="0.0"
+                tools:listitem="@layout/item_list_insect_reports" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_reports"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="109dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:text="Informes"
         android:layout_marginStart="55dp"
         android:layout_marginBottom="26dp"
@@ -89,7 +142,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_records"
         android:layout_width="109dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:text="Registros"
         android:textStyle="bold"
         android:layout_marginEnd="55dp"

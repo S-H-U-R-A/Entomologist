@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         //START SPLASH SCREEN
         val screenSplash = installSplashScreen()

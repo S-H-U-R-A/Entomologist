@@ -1,14 +1,15 @@
 package com.pragma.entomologistapp.core.ext
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,6 +23,9 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
 import com.pragma.entomologistapp.MainActivity
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 fun Int.formatTwoDigits(): String {
     return String.format("%02d", this)
@@ -102,4 +106,24 @@ fun Context.showSnackBarSettings(
 
 fun Fragment.showOrHideDialogLoading(showDialog: Boolean){
     (this.requireActivity() as MainActivity).showOrHideDialogLoading(showDialog)
+}
+
+
+fun EditText.inputTypeWithImeOption(imeOpt: Int, inType: Int){
+    imeOptions = imeOpt
+    setRawInputType(inType)
+    setHorizontallyScrolling(false)
+}
+
+
+fun Calendar.toStringWithFormat(format: String) : String{
+    val dateFormat = SimpleDateFormat( format , Locale.getDefault())
+    return dateFormat.format( this.time )
+}
+
+fun String.toCalendar(format: String) : Calendar{
+    val dateFormat = SimpleDateFormat( format , Locale.getDefault())
+    val calendar = Calendar.getInstance()
+    calendar.time = dateFormat.parse(this)!!
+    return calendar
 }

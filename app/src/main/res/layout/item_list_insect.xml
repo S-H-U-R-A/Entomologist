@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="12dp"
-    android:background="@color/color_outline_variant">
+    android:background="@color/color_surface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,10 +17,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="03"
+            tools:text="03"
             android:layout_marginStart="16dp"
             android:textColor="@color/color_on_primary"
             android:background="@drawable/circle_background"
+            android:backgroundTint="?attr/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -28,7 +30,7 @@
             android:id="@+id/mtv_header_insect"
             android:layout_width="0dp"
             android:layout_height="24dp"
-            android:text="Hormiga"
+            tools:text="Hormiga"
             style="@style/TextAppearance.Material3.TitleMedium"
             android:textSize="16sp"
             android:textColor="?attr/colorOnSurface"
@@ -36,15 +38,15 @@
             app:layout_constraintStart_toEndOf="@id/mtv_count_insect"
             app:layout_constraintTop_toTopOf="@id/iv_avatar_insect"
             app:layout_constraintEnd_toStartOf="@+id/iv_avatar_insect"
-            app:layout_constraintBottom_toTopOf="@id/mtv_subheader_insect"
+            app:layout_constraintBottom_toTopOf="@id/mtv_subHeader_insect"
             app:layout_constraintVertical_chainStyle="packed"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtv_subheader_insect"
+            android:id="@+id/mtv_subHeader_insect"
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:textSize="14sp"
-            android:text="Ciudad 0/00/0000"
+            tools:text="Ciudad 0/00/0000"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/mtv_header_insect"
@@ -60,6 +62,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:importantForAccessibility="no"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

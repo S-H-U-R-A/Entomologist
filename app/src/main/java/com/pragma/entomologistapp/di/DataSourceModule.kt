@@ -11,7 +11,9 @@ import com.pragma.entomologistapp.data.datasource.interfaces.entomologist.Entomo
 import com.pragma.entomologistapp.data.datasource.interfaces.geolocation.GeolocationDataBaseDataSource
 import com.pragma.entomologistapp.data.datasource.interfaces.insect.InsectDataBaseDataSource
 import com.pragma.entomologistapp.data.datasource.interfaces.record.RecordDataBaseDataSource
+import com.pragma.entomologistapp.data.datasource.interfaces.recordInsectGeolocation.RecordInsectGeolocationDataBaseDataSource
 import com.pragma.entomologistapp.data.datasource.record.RecordDataBaseDataSourceImpl
+import com.pragma.entomologistapp.data.datasource.recordInsectGeolocation.RecordInsectGeolocationDataBaseDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -51,5 +53,10 @@ abstract class DataSourceModule {
     abstract fun bindRecordDataBaseDataSource(
         recordDataBaseDataSourceImpl: RecordDataBaseDataSourceImpl
     ) : RecordDataBaseDataSource
+
+    @Binds
+    abstract fun bindRecordInsectGeolocationDataBaseDataSource(
+        recordInsectGeolocationDataBaseDataSourceImpl : RecordInsectGeolocationDataBaseDataSourceImpl
+    ) : RecordInsectGeolocationDataBaseDataSource
 
 }

@@ -2,10 +2,12 @@ package com.pragma.entomologistapp.ui.formInsect
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -19,6 +21,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.pragma.entomologistapp.core.ext.inputTypeWithImeOption
 import com.pragma.entomologistapp.core.ext.pickMediaLauncher
 import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.validateFields
@@ -101,9 +104,9 @@ class FormInsectFragment : Fragment() {
         //SELECCION DE BOTON PARA GUARDAR
         binding.mactvNameInsect.doOnTextChanged { text, _, _, _ ->
             if( listNameInsect.contains( text.toString() ) ){
-                viewModel.setVisibilityButtons(saveButton = false, selectedButton = true)
+                viewModel.setVisibilityButtons( saveButton = false, selectedButton = true)
             }else{
-                viewModel.setVisibilityButtons(saveButton = true, selectedButton = false)
+                viewModel.setVisibilityButtons( saveButton = true, selectedButton = false)
             }
         }
 
@@ -115,7 +118,7 @@ class FormInsectFragment : Fragment() {
                 viewModel.uiState.collect { uiState ->
                     with(uiState){
                         handleListSuggestions(listInsect)
-                        handlePhotoUser( photoEntomologist)
+                        handlePhotoUser( photoEntomologist )
                         handleNavigation( canNavigate )
                         handleButtons( isVisibleButtonSave, isVisibleButtonSelected )
                         handleLoading( isLoading )

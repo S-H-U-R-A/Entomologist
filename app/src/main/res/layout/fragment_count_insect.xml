@@ -95,8 +95,8 @@
         app:boxCornerRadiusTopEnd="25dp"
         app:boxCornerRadiusBottomEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
-        android:visibility="gone"
         app:boxBackgroundColor="?attr/colorSurface"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_count_insect"
         app:layout_constraintEnd_toEndOf="parent">
@@ -105,12 +105,9 @@
             android:id="@+id/tiet_comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Agregar comentario"
-            android:imeOptions="actionDone"
-            android:inputType="textAutoCorrect|textMultiLine"
+            android:hint="@string/add_comment"
             android:gravity="top"
-            android:overScrollMode="always"
-            android:scrollbarStyle="insideInset" />
+            android:scrollbars="vertical"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -119,7 +116,7 @@
         android:id="@+id/mb_save_insect"
         android:layout_width="123dp"
         android:layout_height="48dp"
-        android:text="Guardar"
+        android:text="@string/save_button"
         android:textStyle="bold"
         android:layout_marginTop="118dp"
         android:layout_marginHorizontal="156dp"

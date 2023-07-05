@@ -3,9 +3,11 @@ package com.pragma.entomologistapp.ui.countInsect
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,10 +20,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.pragma.entomologistapp.MainActivity
 import com.pragma.entomologistapp.R
 import com.pragma.entomologistapp.core.ext.checkMultiplePermissionGranted
 import com.pragma.entomologistapp.core.ext.formatTwoDigits
+import com.pragma.entomologistapp.core.ext.inputTypeWithImeOption
 import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.showSimpleMessageSnackBar
 import com.pragma.entomologistapp.databinding.FragmentCountInsectBinding
@@ -32,7 +34,6 @@ import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_NO_USABLE
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_PERMISSION_DENIED
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.NO_COMMENT_INSECT
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.USER_NOT_FOUND
-import com.pragma.entomologistapp.util.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -67,10 +68,8 @@ class CountInsectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initComponents()
         initObservers()
-
     }
 
     private fun initComponents() {
@@ -80,9 +79,13 @@ class CountInsectFragment : Fragment() {
         //SE CARGAN LOS DATOS DEL INSECTO
         setDataInsect(insect!!)
 
+        //CONFIG EDITTEXT
+        binding.tietComment.inputTypeWithImeOption( EditorInfo.IME_ACTION_DONE, InputType.TYPE_TEXT_FLAG_MULTI_LINE )
+
         binding.fabCountPlus.setOnClickListener {
             viewModel.plusInsect()
         }
+
         binding.fabCountMinus.setOnClickListener {
             viewModel.minusInsect()
         }
@@ -100,7 +103,7 @@ class CountInsectFragment : Fragment() {
     }
 
     private fun initObservers() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState
                     .collect { stateUi ->
