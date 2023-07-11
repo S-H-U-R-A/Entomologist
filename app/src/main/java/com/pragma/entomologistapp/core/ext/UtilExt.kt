@@ -5,10 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
@@ -127,3 +125,4 @@ fun String.toCalendar(format: String) : Calendar{
     calendar.time = dateFormat.parse(this)!!
     return calendar
 }
+

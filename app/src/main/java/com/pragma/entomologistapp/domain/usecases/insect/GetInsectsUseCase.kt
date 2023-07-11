@@ -5,12 +5,10 @@ import com.pragma.entomologistapp.domain.repository.InsectRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetInsectsNamesUseCase @Inject constructor(
+class GetInsectsUseCase @Inject constructor(
     private val insectRepository: InsectRepository
 ) {
-
-    operator fun invoke() : Flow< List<String> >{
-        return insectRepository.getAllInsectsOnlyName()
+    operator fun invoke() : Flow< List<InsectDomain> >{
+        return insectRepository.getAllInsects()
     }
-
 }
