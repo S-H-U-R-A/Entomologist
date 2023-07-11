@@ -11,6 +11,7 @@ import com.pragma.entomologistapp.domain.repository.InsectRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -33,10 +34,12 @@ class InsectRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAllInsectsOnlyName(): Flow<List<String>> {
-        return insectDataBaseDataSource
-            .getAllInsectsOnlyName()
-            .flowOn(coroutineDispatcher)
+    override fun getAllInsects(): Flow< List<InsectDomain> > {
+        return insectDataBaseDataSource.getAllInsects().map { listInsectEntity ->
+            listInsectEntity.map {
+                it.toDomain()
+            }
+        }.flowOn(coroutineDispatcher)
     }
 
     override suspend fun insertAndGetInsect(insect: InsectEntity): InsectDomain {

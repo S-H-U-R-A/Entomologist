@@ -2,12 +2,10 @@ package com.pragma.entomologistapp.ui.formInsect
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -21,12 +19,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.pragma.entomologistapp.core.ext.inputTypeWithImeOption
+import com.pragma.entomologistapp.R
+import com.pragma.entomologistapp.core.TypeUser
 import com.pragma.entomologistapp.core.ext.pickMediaLauncher
 import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.validateFields
 import com.pragma.entomologistapp.databinding.FragmentFormInsectBinding
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
+import com.pragma.entomologistapp.domain.model.InsectDomain
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -37,12 +37,14 @@ class FormInsectFragment : Fragment() {
     //LAUNCHER FOR PICKMEDIALAUNCHER
     private val pickMediaLauncher = pickMediaLauncher { uri ->
         if (uri != null) {
-            //SE CARGA EN EL VIEW LA IMAGEN SELECCIONADA
-            handleImageInsectSelected( uri )
-
-            //SE GUARDA LA IMAGEN DE INSECTO SELECCIONADA
+            //SAVE IMAGE SELECTED
             imageInsectUriSelected = uri
-
+            //LOAD IMAGE
+            viewModel.setDataInsect(
+                uri.toString(),
+                "",
+                true
+            )
         }
     }
 
@@ -55,17 +57,13 @@ class FormInsectFragment : Fragment() {
 
     private var listNameInsect: List<String> = emptyList()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFormInsectBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initComponents()
         initObservers()
     }
@@ -75,9 +73,10 @@ class FormInsectFragment : Fragment() {
         //CARGA DE INFORMACIÓN DEL USUARIO
         viewModel.loadUser()
 
+        //OPEN GALLERY
         binding.ibAvatarInsect.setOnClickListener {
             //SE LANZA EL VISUALIZADOR DE LA GALERIA
-            pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            pickMediaLauncher.launch( PickVisualMediaRequest( ActivityResultContracts.PickVisualMedia.ImageOnly ) )
         }
 
         //SE CREA UN OBSERVADOR COMUN
@@ -92,21 +91,40 @@ class FormInsectFragment : Fragment() {
             tietInfo.addTextChangedListener( validateFields )
         }
 
-        //BOTONES DE GUARDADO
+        //BUTTON SAVE
         binding.mbSaveInsect.setOnClickListener {
             handleRegisterInsect()
         }
 
+        //BUTTON NEXT
         binding.mbSelectedInsect.setOnClickListener {
-            handleRegisterInsect()
+            viewModel.followTheCount { insect: InsectDomain ->
+                val action: NavDirections = FormInsectFragmentDirections.actionFormInsectFragmentToCountInsectFragment(insect)
+                findNavController().navigate(action)
+            }
         }
 
-        //SELECCION DE BOTON PARA GUARDAR
+        //HANDLE TEXT SELECTED OR WRITTEN
         binding.mactvNameInsect.doOnTextChanged { text, _, _, _ ->
-            if( listNameInsect.contains( text.toString() ) ){
-                viewModel.setVisibilityButtons( saveButton = false, selectedButton = true)
+            //IF EXIST
+            if(!text.isNullOrEmpty()){
+
+                val lista: List<String> = listNameInsect
+
+                if( listNameInsect.contains(  text.toString().lowercase().replaceFirstChar { it.uppercase() }.trim() ) ){
+                    viewModel.selectInsect( text.trim().toString() )
+                    viewModel.setVisibilityButtons( saveButton = false, selectedButton = true)
+                }else{
+                    //IF EXIST IMAGE SELECTED FOR NEW INSECT
+                    if(imageInsectUriSelected != null){
+                        viewModel.setDataInsect( imageInsectUriSelected.toString(), "", true )
+                    }else{
+                        viewModel.selectInsect( TypeUser.INSECT.name )
+                    }
+                    viewModel.setVisibilityButtons( saveButton = true, selectedButton = false)
+                }
             }else{
-                viewModel.setVisibilityButtons( saveButton = true, selectedButton = false)
+                viewModel.selectInsect( TypeUser.INSECT.name )
             }
         }
 
@@ -117,8 +135,11 @@ class FormInsectFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.uiState.collect { uiState ->
                     with(uiState){
-                        handleListSuggestions(listInsect)
                         handlePhotoUser( photoEntomologist )
+                        handleListSuggestions( listInsectNames )
+                        handleImageSelected( imageSelected )
+                        handleUrlInfo( urlInfo )
+                        handleViewsIsEnabled( isEnableDataInsectSelected )
                         handleNavigation( canNavigate )
                         handleButtons( isVisibleButtonSave, isVisibleButtonSelected )
                         handleLoading( isLoading )
@@ -128,11 +149,36 @@ class FormInsectFragment : Fragment() {
         }
     }
 
+    private fun handleUrlInfo(urlInfo: String) {
+        binding.tietInfo.setText( urlInfo)
+    }
+
+    private fun handleViewsIsEnabled(enableDataInsectSelected: Boolean) {
+        binding.tietInfo.isEnabled = enableDataInsectSelected
+        binding.ibAvatarInsect.isEnabled = enableDataInsectSelected
+    }
+
+    private fun handleImageSelected(imageSelected: String) {
+        if(imageSelected.isNotEmpty()){
+            Glide
+                .with(this)
+                .load( imageSelected )
+                .circleCrop()
+                .into( binding.ibAvatarInsect )
+        }else{
+            Glide
+                .with(this)
+                .load( resources.getDrawable(R.drawable.round_image_button,null) )
+                .circleCrop()
+                .into( binding.ibAvatarInsect )
+        }
+    }
+
     private fun handleRegisterInsect(){
         if(imageInsectUriSelected != null){
             with(binding){
                 registerInsect(
-                    mactvNameInsect.text.toString(),
+                    mactvNameInsect.text.toString().lowercase().replaceFirstChar { it.uppercase() }.trim(),
                     imageInsectUriSelected!!,
                     tietInfo.text.toString()
                 )
@@ -187,31 +233,14 @@ class FormInsectFragment : Fragment() {
         }
     }
 
-    private fun handleImageInsectSelected(uri: Uri) {
-        Glide
-            .with(this)
-            .load(uri)
-            .circleCrop()
-            .into( binding.ibAvatarInsect )
-    }
-
     private fun handleValidateFields(): Boolean {
         var isValid = true
-
-        if( binding.mactvNameInsect.text.toString().trim().isEmpty() ){
-            isValid = false
-        }
-
-        if( binding.tietInfo.text.toString().trim().isEmpty() ){
-            isValid = false
-        }
-
+        if( binding.mactvNameInsect.text.toString().trim().isEmpty() ){ isValid = false }
+        if( binding.tietInfo.text.toString().trim().isEmpty() ){ isValid = false }
         return isValid
     }
 
-    private fun handleLoading(canShowLoading: Boolean) {
-       showOrHideDialogLoading(canShowLoading)
-    }
+    private fun handleLoading(canShowLoading: Boolean) = showOrHideDialogLoading(canShowLoading)
 
     override fun onResume() {
         super.onResume()

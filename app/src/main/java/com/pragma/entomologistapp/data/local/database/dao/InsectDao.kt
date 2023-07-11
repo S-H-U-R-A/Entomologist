@@ -14,8 +14,8 @@ interface InsectDao {
     @Query("SELECT * FROM ${InsectEntity.TABLE_NAME}")
     fun getAllInsects(): Flow<List<InsectEntity>>
 
-    @Query("SELECT DISTINCT name FROM ${InsectEntity.TABLE_NAME}")
-    fun getAllInsectsOnlyName(): Flow<List<String>>
+/*    @Query("SELECT DISTINCT name FROM ${InsectEntity.TABLE_NAME}")
+    fun getAllInsectsOnlyName(): Flow<List<String>>*/
 
     @Query("SELECT * FROM ${InsectEntity.TABLE_NAME} WHERE id = :id")
     suspend fun getInsectById(id: Int): InsectEntity

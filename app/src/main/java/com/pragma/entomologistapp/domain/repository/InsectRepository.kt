@@ -14,7 +14,7 @@ interface InsectRepository {
         nameInsect:String?
     ) : String?
 
-    fun getAllInsectsOnlyName(): Flow< List<String> >
+    fun getAllInsects(): Flow< List<InsectDomain> >
 
     suspend fun insertAndGetInsect(insect: InsectEntity): InsectDomain
 
