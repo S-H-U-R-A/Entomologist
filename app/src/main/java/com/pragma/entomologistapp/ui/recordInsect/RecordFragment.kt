@@ -20,6 +20,7 @@ import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.databinding.FragmentRecordBinding
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
+import com.pragma.entomologistapp.domain.model.ReportInsectBySpeciesDomain
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -32,7 +33,10 @@ class RecordFragment : Fragment() {
 
     private val viewModel: RecordInsectViewModel by viewModels()
 
+    //ADAPTERS
     private lateinit var recordsAdapter: RecordListAdapter
+    private lateinit var reportsAdapter: ReportListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,17 +56,30 @@ class RecordFragment : Fragment() {
         //SE CARGA LA INFO DEL USUARIO
         viewModel.loadData()
         //CONFIG RECYCLERVIEW
-        recordsAdapter = RecordListAdapter(){}
+        recordsAdapter = RecordListAdapter(){recordInsect: RecordInsectGeolocationDomain ->
+            Log.d("INSECT_DOMAIN", recordInsect.toString())
+        }
+
+        reportsAdapter = ReportListAdapter(){ reportInsect: ReportInsectBySpeciesDomain ->
+            val listRecordInsectById = viewModel.getListRecordInsectById(reportInsect.idInsect)
+
+            Log.d("INSECT_DOMAIN", reportInsect.toString())
+            Log.d("INSECT_DOMAIN_R", listRecordInsectById.toString())
+
+        }
+
+
         binding.rvRecords.adapter = recordsAdapter
+        binding.rvReports.adapter = reportsAdapter
+
         //ADD INSECT
         binding.fabAdd.setOnClickListener {
             val action: NavDirections = RecordFragmentDirections.actionRecordFragmentToFormInsectFragment()
             findNavController().navigate(action)
         }
-
-        //binding.mbReports.setOnClickListener { handleVisibilityOfRecordsAndReports(true) }
-
-        //binding.mbRecords.setOnClickListener { handleVisibilityOfRecordsAndReports(false) }
+        //VISIBILITY ELEMENTS IN UI
+        binding.mbReports.setOnClickListener { handleVisibilityOfRecordsAndReports(true) }
+        binding.mbRecords.setOnClickListener { handleVisibilityOfRecordsAndReports(false) }
 
     }
 
@@ -77,6 +94,7 @@ class RecordFragment : Fragment() {
                 viewModel.uiState.collect { stateUi ->
                     handlePhotoUser( stateUi.imageEntomologist )
                     handleListRecords( stateUi.recordList )
+                    handleListReports( stateUi.reportList )
                     handleButtonsAndUI( stateUi.isVisibleButtonsAndShouldAdjustUi )
                     handleLoading( stateUi.isLoading )
                 }
@@ -91,6 +109,33 @@ class RecordFragment : Fragment() {
             rvRecords.isVisible = !isVisibleReport
             cvReport.isVisible = isVisibleReport
         }
+        handleStyleButtons(isVisibleReport)
+    }
+
+    private fun handleStyleButtons(isVisibleReport: Boolean){
+        with(binding){
+            if(isVisibleReport){
+
+                mbReports.elevation = 3f
+                mbReports.setBackgroundColor(  resources.getColor(R.color.color_surface, resources.newTheme() )   )
+                mbReports.strokeWidth = 0
+
+                mbRecords.elevation = 0f
+                mbRecords.setBackgroundColor(  resources.getColor(R.color.color_transparent, null )   )
+                mbRecords.strokeWidth = 2
+
+
+            }else{
+                mbReports.elevation = 0f
+                mbReports.setBackgroundColor(  resources.getColor(R.color.color_transparent, null )   )
+                mbReports.strokeWidth = 2
+
+                mbRecords.elevation = 3f
+                mbRecords.setBackgroundColor(  resources.getColor(R.color.color_surface, resources.newTheme() )   )
+                mbRecords.strokeWidth = 0
+            }
+        }
+
     }
 
     private fun handleButtonsAndUI( visibleButtonsAndShouldAdjustUi: Boolean ) {
@@ -102,8 +147,11 @@ class RecordFragment : Fragment() {
     }
 
     private fun handleListRecords(recordList: List<RecordInsectGeolocationDomain>) {
-        Log.d("LISTA_RECORD", recordList.toString())
         recordsAdapter.submitList( recordList )
+    }
+
+    private fun handleListReports(reportList: List<ReportInsectBySpeciesDomain>) {
+        reportsAdapter.submitList(reportList)
     }
 
     private fun handleNavigation(firstTime: Boolean) {

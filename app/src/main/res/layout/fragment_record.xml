@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +8,7 @@
 
     <include
         android:id="@+id/layout_avatar_profile"
-        layout="@layout/avatar_profile"/>
+        layout="@layout/avatar_profile" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_insect"
@@ -17,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="240dp"
-        android:visibility="visible"
         android:background="@color/color_surface_variant"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_avatar_profile">
@@ -27,32 +26,33 @@
             android:id="@+id/iv_bullete"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_bullete"
             android:layout_marginHorizontal="4dp"
             android:layout_marginVertical="16dp"
+            android:src="@drawable/ic_bullete"
+            app:layout_constraintBottom_toBottomOf="@id/mtv_new_count"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/mtv_new_count"
-            app:layout_constraintBottom_toBottomOf="@id/mtv_new_count"/>
+            android:importantForAccessibility="no"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtv_new_count"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nuevo conteo"
+            android:text="@string/new_count"
+            app:layout_constraintBottom_toBottomOf="@id/fab_add"
             app:layout_constraintEnd_toStartOf="@id/fab_add"
             app:layout_constraintStart_toEndOf="@id/iv_bullete"
-            app:layout_constraintTop_toTopOf="@id/fab_add"
-            app:layout_constraintBottom_toBottomOf="@id/fab_add"/>
+            app:layout_constraintTop_toTopOf="@id/fab_add" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:importantForAccessibility="no"
             android:id="@+id/fab_add"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/color_secondary_container"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,17 +64,16 @@
         android:id="@+id/rv_records"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="17dp"
         android:layout_marginHorizontal="26dp"
+        android:layout_marginTop="17dp"
         android:layout_marginBottom="16dp"
-        tools:listitem="@layout/item_list_insect"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/mb_reports"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_add_insect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mb_reports"
-    />
+        tools:listitem="@layout/item_list_insect" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_report"
@@ -84,13 +83,13 @@
         android:layout_marginTop="64dp"
         android:layout_marginBottom="176dp"
         android:backgroundTint="?attr/colorSurfaceVariant"
+        android:visibility="gone"
         app:cardCornerRadius="28dp"
         app:cardElevation="1dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_avatar_profile"
+        app:layout_constraintBottom_toTopOf="@id/mb_reports"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mb_reports">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_avatar_profile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -98,15 +97,15 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtv_header_report"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
-                android:paddingHorizontal="24dp"
                 android:gravity="center_vertical|start"
+                android:paddingHorizontal="24dp"
                 android:text="@string/your_summary"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_reports"
@@ -130,27 +129,27 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="109dp"
         android:layout_height="48dp"
-        android:text="Informes"
         android:layout_marginStart="55dp"
         android:layout_marginBottom="26dp"
+        android:text="@string/reports"
         android:visibility="gone"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/mb_records"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_records"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="109dp"
         android:layout_height="48dp"
-        android:text="Registros"
-        android:textStyle="bold"
         android:layout_marginEnd="55dp"
         android:layout_marginBottom="26dp"
+        android:text="@string/registers"
+        android:textStyle="bold"
         android:visibility="gone"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        app:layout_constraintStart_toEndOf="@id/mb_reports"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/mb_reports" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pragma.entomologistapp.domain.model.EntomologistDomain
 import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
+import com.pragma.entomologistapp.domain.model.ReportInsectBySpeciesDomain
 import com.pragma.entomologistapp.domain.usecases.entomologist.GetEntomologistDataBaseUseCase
-import com.pragma.entomologistapp.domain.usecases.recordInsectGeolocation.LoadRecordWithInsectAndGeolocationUseCase
+import com.pragma.entomologistapp.domain.usecases.recordAndReportInsectGeolocation.LoadRecordWithInsectAndGeolocationUseCase
+import com.pragma.entomologistapp.domain.usecases.recordAndReportInsectGeolocation.LoadReportWithInsectAndGeolocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecordInsectViewModel @Inject constructor(
     private val getEntomologistDataBaseUseCase: GetEntomologistDataBaseUseCase,
-    private val loadRecordWithInsectAndGeolocationUseCase: LoadRecordWithInsectAndGeolocationUseCase
+    private val loadRecordWithInsectAndGeolocationUseCase: LoadRecordWithInsectAndGeolocationUseCase,
+    private val loadReportWithInsectAndGeolocationUseCase: LoadReportWithInsectAndGeolocationUseCase
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordInsectUiState> = MutableStateFlow( RecordInsectUiState() )
@@ -41,8 +44,9 @@ class RecordInsectViewModel @Inject constructor(
                     _firstTime.postValue(false)
                     //
                     _uiState.update { state -> state.copy( isLoading = false, imageEntomologist = entomologist.urlPhoto ) }
-                    //SE CARGAN LOS INSECTOS
-                    loadRecordsInsect()
+                    //LOAD INSECT RECORDS AND REPORTS
+                    loadRecordsAndReportInsect()
+
                 }else{
                     _uiState.update { uiState -> uiState.copy(isLoading = false) }
                     _firstTime.postValue(true)
@@ -51,20 +55,30 @@ class RecordInsectViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadRecordsInsect(){
+    private suspend fun loadRecordsAndReportInsect(){
         loadRecordWithInsectAndGeolocationUseCase()
             .collect{ listRecords: List<RecordInsectGeolocationDomain> ->
-               _uiState.update { uiState -> uiState.copy( isLoading = false, recordList = listRecords) }
+                loadReportWithInsectAndGeolocationUseCase()
+                    .collect{ listReports: List<ReportInsectBySpeciesDomain> ->
+                        _uiState.update { uiState -> uiState.copy(isLoading = false, reportList = listReports, recordList = listRecords) }
+                    }
             }
     }
+
+    fun getListRecordInsectById(idInsect: Int): List<RecordInsectGeolocationDomain> {
+        return  _uiState.value.recordList.filter {
+            it.idInsect == idInsect
+        }
+    }
+
 
 }
 
 data class RecordInsectUiState(
     val isLoading: Boolean = false,
     val imageEntomologist: String = EntomologistDomain.IMAGE_DEFAULT,
-    val recordList: List<RecordInsectGeolocationDomain> = emptyList()
-    //LISTA DE INFORMES
+    val recordList: List<RecordInsectGeolocationDomain> = emptyList(),
+    val reportList : List<ReportInsectBySpeciesDomain> = emptyList()
 )
 
 val RecordInsectUiState.isVisibleButtonsAndShouldAdjustUi: Boolean get() = recordList.isNotEmpty()

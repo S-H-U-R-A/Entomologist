@@ -8,7 +8,7 @@ import com.pragma.entomologistapp.data.local.database.dao.EntomologistDao
 import com.pragma.entomologistapp.data.local.database.dao.GeolocationDao
 import com.pragma.entomologistapp.data.local.database.dao.InsectDao
 import com.pragma.entomologistapp.data.local.database.dao.RecordDao
-import com.pragma.entomologistapp.data.local.database.dao.RecordInsectGeolocationDao
+import com.pragma.entomologistapp.data.local.database.dao.RecordAndReportInsectGeolocationDao
 import com.pragma.entomologistapp.data.local.database.entity.EntomologistEntity
 import com.pragma.entomologistapp.data.local.database.entity.GeolocationEntity
 import com.pragma.entomologistapp.data.local.database.entity.InsectEntity
@@ -37,6 +37,6 @@ abstract class EntomologyDataBase : RoomDatabase() {
     abstract fun insectDao(): InsectDao
     abstract fun recordDao(): RecordDao
     abstract fun geolocationDao (): GeolocationDao
-    abstract fun recordInsectGeolocationDao(): RecordInsectGeolocationDao
+    abstract fun recordInsectGeolocationDao(): RecordAndReportInsectGeolocationDao
 
 }
