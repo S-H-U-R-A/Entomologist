@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name_user">Nombre</string>
     <string name="helper_required">Campo requerido</string>
-
+    <string name="new_count">Nuevo conteo</string>
     <!-- MESSAGE'S LOCATION -->
     <string name="explain_user_feature_location">Sin la ubicación precisa, no podremos indicarte en que lugar encontraste la muestra.</string>
     <string name="explanation_location_permission">
@@ -30,6 +30,8 @@
 
     <!--BUTTONS -->
     <string name="save_button">Guardar</string>
+    <string name="registers">Registros</string>
+    <string name="reports">Informes</string>
 
 
 </resources>

@@ -75,7 +75,8 @@
     <color name="color_outline">#727970</color>
     <color name="color_outline_variant">#C1C9BE</color>
 
-
+    <!-- Color transparent -->
+    <color name="color_transparent">#00000000</color>
 
 
 </resources>

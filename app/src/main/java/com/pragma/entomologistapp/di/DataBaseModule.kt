@@ -7,7 +7,7 @@ import com.pragma.entomologistapp.data.local.database.dao.EntomologistDao
 import com.pragma.entomologistapp.data.local.database.dao.GeolocationDao
 import com.pragma.entomologistapp.data.local.database.dao.InsectDao
 import com.pragma.entomologistapp.data.local.database.dao.RecordDao
-import com.pragma.entomologistapp.data.local.database.dao.RecordInsectGeolocationDao
+import com.pragma.entomologistapp.data.local.database.dao.RecordAndReportInsectGeolocationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,7 +60,7 @@ object DataBaseModule {
     }
     @Singleton
     @Provides
-    fun provideRecordInsectGeolocation(dataBase: EntomologyDataBase) : RecordInsectGeolocationDao{
+    fun provideRecordInsectGeolocation(dataBase: EntomologyDataBase) : RecordAndReportInsectGeolocationDao{
         return dataBase.recordInsectGeolocationDao()
     }
 
