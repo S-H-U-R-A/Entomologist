@@ -5,6 +5,7 @@
     <string name="name_user">Nombre</string>
     <string name="helper_required">Campo requerido</string>
     <string name="new_count">Nuevo conteo</string>
+
     <!-- MESSAGE'S LOCATION -->
     <string name="explain_user_feature_location">Sin la ubicación precisa, no podremos indicarte en que lugar encontraste la muestra.</string>
     <string name="explanation_location_permission">
@@ -15,6 +16,9 @@
     </string>
     <string name="message_enable_location">Por favor, activa la funcionalidad de ubicación en tu dispositivo.</string>
     <string name="error_getting_location">Ocurrió un error inesperado al intentar obtener la ubicación precisa, inténtalo nuevamente.</string>
+
+    <!-- MESSAGE'S EDIT-->
+    <string name="not_data_found_for_edit">No existe información para editar</string>
 
     <!-- ALERT DIALOG BUTTONS -->
     <string name="dialog_button_negative">Cancelar</string>
@@ -32,6 +36,7 @@
     <string name="save_button">Guardar</string>
     <string name="registers">Registros</string>
     <string name="reports">Informes</string>
+    <string name="edit">Editar</string>
 
 
 </resources>

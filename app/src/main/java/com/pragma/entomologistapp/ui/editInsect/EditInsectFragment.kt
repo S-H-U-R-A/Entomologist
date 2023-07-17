@@ -1,60 +1,118 @@
 package com.pragma.entomologistapp.ui.editInsect
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pragma.entomologistapp.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.pragma.entomologistapp.core.ext.showSimpleMessageSnackBar
+import com.pragma.entomologistapp.databinding.FragmentEditInsectBinding
+import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
+import com.pragma.entomologistapp.ui.countInsect.UserMessages
+import com.pragma.entomologistapp.ui.editInsect.EditInsectUserMessage.*
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditInsectFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class EditInsectFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentEditInsectBinding? = null
+    private val binding get() = _binding!!
+
+    private val args by navArgs<EditInsectFragmentArgs>()
+
+    private val viewModel: EditInsectViewModel by viewModels();
+
+    private var _recordInsectGeolocationDomain: RecordInsectGeolocationDomain? = null;
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEditInsectBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initComponents()
+        initObservers()
+    }
+
+    private fun initComponents() {
+        //LOAD INSECT WITH EXTRA DATA
+        viewModel.setInsectWithExtraData( args.RecordAndInsect )
+        //LISTENER SAVE BUTTON
+        binding.mbSave.setOnClickListener {
+            findNavController().navigate(
+                EditInsectFragmentDirections.actionEditInsectFragmentToRecordFragment()
+            )
+        }
+        //LISTENER EDIT BUTTON
+        binding.mbEdit.setOnClickListener {
+            /*if(_recordInsectGeolocationDomain != null){
+                findNavController().navigate(
+                    EditInsectFragmentDirections.actionEditInsectFragmentToCountInsectFragment(null, _recordInsectGeolocationDomain)
+                )
+            }else {
+                viewModel.sendMessageEntomologist(NOT_DATA_FOUND_FOR_EDIT)
+            }*/
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_insect, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditInsectFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditInsectFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.uiState.collect{ uiState ->
+                    handleLoadData( uiState.insectWithExtraData )
+                    handleMessagesEntomologist( uiState.messageEntomologist )
                 }
             }
+        }
     }
+
+    private fun handleLoadData( insectWithExtraData: RecordInsectGeolocationDomain? ) {
+        insectWithExtraData?.let {
+            //LOAD DATA INTO UI
+            with(binding){
+                mtvCountInsect.text = it.countInsect.toString()
+                mtvNameInsect.text = it.nameInsect
+                mtvSubHeaderInsect.text = String.format("%s %s", it.cityName, it.dateRecord )
+                Glide.with(requireContext())
+                    .load( it.photoInsect )
+                    .centerCrop()
+                    .into( ivAvatarInsect )
+                mtvComments.text = it.countComment
+                mtvUrlInfo.text =it.moreInfo
+            }
+            //LOAD DATA FOR SEND TO NEXT SCREEN
+            _recordInsectGeolocationDomain = insectWithExtraData
+        }
+    }
+
+    private fun handleMessagesEntomologist(messageEntomologist: List<EditInsectUserMessage>) {
+        messageEntomologist.forEach { messageStateUi: EditInsectUserMessage ->
+            when(messageStateUi){
+                NOT_DATA_FOUND_FOR_EDIT -> {
+                    requireContext().showSimpleMessageSnackBar(
+                        binding.root,
+                        NOT_DATA_FOUND_FOR_EDIT.message
+                    )
+                }
+            }
+            viewModel.deleteMessageEntomologist( messageStateUi )
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _recordInsectGeolocationDomain = null
+    }
+
 }

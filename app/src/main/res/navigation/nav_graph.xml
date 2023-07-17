@@ -47,6 +47,10 @@
             android:id="@+id/action_recordFragment_to_formInsectFragment"
             app:destination="@id/formInsectFragment" />
 
+        <action
+            android:id="@+id/action_recordFragment_to_editInsectFragment"
+            app:destination="@id/editInsectFragment" />
+
     </fragment>
 
     <fragment
@@ -69,13 +73,39 @@
 
         <argument
             android:name="insect"
-            app:argType="com.pragma.entomologistapp.domain.model.InsectDomain" />
+            app:argType="com.pragma.entomologistapp.domain.model.InsectDomain"
+            app:nullable="true" />
+
+        <argument
+            android:name="recordAndInsect"
+            app:argType="com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_countInsectFragment_to_recordFragment"
             app:destination="@id/recordFragment"
             app:popUpTo="@id/recordFragment"
             app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/editInsectFragment"
+        android:name="com.pragma.entomologistapp.ui.editInsect.EditInsectFragment"
+        android:label=""
+        tools:layout="@layout/fragment_edit_insect" >
+
+        <argument
+            android:name="RecordAndInsect"
+            app:argType="com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain" />
+        <action
+            android:id="@+id/action_editInsectFragment_to_recordFragment"
+            app:destination="@id/recordFragment"
+            app:popUpTo="@id/recordFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_editInsectFragment_to_countInsectFragment"
+            app:destination="@id/countInsectFragment" />
 
     </fragment>
 

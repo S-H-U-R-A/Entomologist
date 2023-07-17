@@ -99,7 +99,7 @@ class FormInsectFragment : Fragment() {
         //BUTTON NEXT
         binding.mbSelectedInsect.setOnClickListener {
             viewModel.followTheCount { insect: InsectDomain ->
-                val action: NavDirections = FormInsectFragmentDirections.actionFormInsectFragmentToCountInsectFragment(insect)
+                val action: NavDirections = FormInsectFragmentDirections.actionFormInsectFragmentToCountInsectFragment(insect, null)
                 findNavController().navigate(action)
             }
         }
@@ -194,7 +194,7 @@ class FormInsectFragment : Fragment() {
             image,
             moreInfo
         ){ insectInserted ->
-            val action: NavDirections = FormInsectFragmentDirections.actionFormInsectFragmentToCountInsectFragment(insectInserted)
+            val action: NavDirections = FormInsectFragmentDirections.actionFormInsectFragmentToCountInsectFragment(insectInserted, null)
             findNavController().navigate(action)
         }
     }

@@ -28,6 +28,7 @@ import com.pragma.entomologistapp.core.ext.showOrHideDialogLoading
 import com.pragma.entomologistapp.core.ext.showSimpleMessageSnackBar
 import com.pragma.entomologistapp.databinding.FragmentCountInsectBinding
 import com.pragma.entomologistapp.domain.model.InsectDomain
+import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.GET_LOCATION_ERROR
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_EXPLANATION_PERMISSION
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_NO_USABLE
@@ -35,6 +36,7 @@ import com.pragma.entomologistapp.ui.countInsect.UserMessages.LOCATION_PERMISSIO
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.NO_COMMENT_INSECT
 import com.pragma.entomologistapp.ui.countInsect.UserMessages.USER_NOT_FOUND
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -60,6 +62,7 @@ class CountInsectFragment : Fragment() {
     private val args by navArgs<CountInsectFragmentArgs>()
 
     private var insect: InsectDomain? = null
+    private var recordAndInsect: RecordInsectGeolocationDomain? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View {
         _binding = FragmentCountInsectBinding.inflate(layoutInflater)
@@ -73,24 +76,22 @@ class CountInsectFragment : Fragment() {
     }
 
     private fun initComponents() {
-        //SE RECUPERA EL INSECTO
-        insect = args.insect
-
         //SE CARGAN LOS DATOS DEL INSECTO
-        setDataInsect(insect!!)
-
+        if(args.insect != null) insect = args.insect else recordAndInsect = args.recordAndInsect
+        setDataInsect(insect, recordAndInsect)
         //CONFIG EDITTEXT
         binding.tietComment.inputTypeWithImeOption( EditorInfo.IME_ACTION_DONE, InputType.TYPE_TEXT_FLAG_MULTI_LINE )
-
+        //PLUS INSECT
         binding.fabCountPlus.setOnClickListener {
             viewModel.plusInsect()
         }
-
+        //MINUS INSECT
         binding.fabCountMinus.setOnClickListener {
             viewModel.minusInsect()
         }
-
+        //SAVE BUTTON
         binding.mbSaveInsect.setOnClickListener {
+            // TODO: SE DEBE REFACTORIZAR
             viewModel.getServicesLocationInfoApp{ isLocationUsable ->
                 if(!isLocationUsable) {
                     viewModel.sendMessageEntomologist( LOCATION_NO_USABLE )
@@ -107,25 +108,44 @@ class CountInsectFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState
                     .collect { stateUi ->
-                        handleCountInsect( stateUi.countInsect )
-                        handleButtonSave( stateUi.isVisibleButtonSave )
-                        handleComment( stateUi.isVisibleComment )
-                        handleMessagesEntomologist( stateUi.messageEntomologist )
-                        handleLoading( stateUi.isLoading )
+                        handleCountInsect(stateUi.countInsect)
+                        handleUiData(stateUi.insect, stateUi.recordInsect)
+                        handleButtonSave(stateUi.isVisibleButtonSave)
+                        handleComment(stateUi.isVisibleComment)
+                        handleMessagesEntomologist(stateUi.messageEntomologist)
+                        handleLoading(stateUi.isLoading)
                     }
             }
         }
     }
 
-    private fun setDataInsect(insect: InsectDomain) {
+    private fun handleUiData(insect: InsectDomain?, recordInsect: RecordInsectGeolocationDomain?) {
+        insect?.let {
+            with(binding){
+                Glide.with(requireContext())
+                    .load( File(it.urlPhoto) )
+                    .circleCrop()
+                    .into(ivInsect)
+                mtvNameInsect.text = insect.name
+            }
+        }
+        recordInsect?.let {
+            with(binding){
+                Glide.with(requireContext())
+                    .load( File(it.photoInsect) )
+                    .circleCrop()
+                    .into(ivInsect)
+                mtvNameInsect.text = it.nameInsect
+            }
+        }
+    }
 
-        Glide.with(requireContext())
-            .load(File(insect.urlPhoto))
-            .circleCrop()
-            .into(binding.ivInsect)
-
-        binding.mtvNameInsect.text = insect.name
-
+    private fun setDataInsect(insect: InsectDomain?, recordAndInsect: RecordInsectGeolocationDomain?) {
+        viewModel.setData(insect, recordAndInsect)
+        recordAndInsect?.let {
+            binding.tietComment.setText(it.countComment)
+            viewModel.setCount( it.countInsect )
+        }
     }
 
     private fun handleCountInsect(countInsect: Int) {
@@ -212,9 +232,13 @@ class CountInsectFragment : Fragment() {
             //SI EXISTIA UN ERROR EN PANTALLA LO ELIMINAMOS
             binding.tilComment.error = ""
 
+            val edit: Boolean = recordAndInsect!=null
+            val idInsectToSave = insect?.id ?: recordAndInsect?.idInsect
+
             viewModel.enterInsectCount(
-                insect!!.id!!,
+                idInsectToSave!!,
                 binding.tietComment.text.toString(),
+                edit
             ){
                 val action: NavDirections = CountInsectFragmentDirections.actionCountInsectFragmentToRecordFragment()
                 findNavController().navigate( action )
