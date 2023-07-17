@@ -6,4 +6,6 @@ interface RecordDataBaseDataSource {
 
     suspend fun insertRecord(recordEntity: RecordEntity)
 
+    suspend fun updateRecord(recordEntity: RecordEntity)
+
 }

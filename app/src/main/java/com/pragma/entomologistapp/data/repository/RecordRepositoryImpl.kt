@@ -19,4 +19,10 @@ class RecordRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateRecord(recordEntity: RecordEntity) {
+        withContext(coroutineDispatcher){
+            recordDataBaseDataSource.updateRecord(recordEntity)
+        }
+    }
+
 }

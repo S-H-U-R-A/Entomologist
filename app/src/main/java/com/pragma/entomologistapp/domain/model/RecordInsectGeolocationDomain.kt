@@ -8,6 +8,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RecordInsectGeolocationDomain(
+    val idEntomologist: Int,
+    val idGeolocation: Int,
     val idInsect: Int,
     val idRecord: Int,
     val countInsect: Int,
@@ -21,6 +23,8 @@ data class RecordInsectGeolocationDomain(
     val longitude: Double
 ): Parcelable{
     fun toDataLayer() : RecordInsectGeolocation = RecordInsectGeolocation(
+        this.idEntomologist,
+        this.idGeolocation,
         this.idInsect,
         this.idRecord,
         this.countInsect,

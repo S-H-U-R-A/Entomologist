@@ -58,6 +58,8 @@ class RecordFragment : Fragment() {
         //CONFIG RECYCLERVIEW
         recordsAdapter = RecordListAdapter(){recordInsect: RecordInsectGeolocationDomain ->
             Log.d("INSECT_DOMAIN", recordInsect.toString())
+            val action = RecordFragmentDirections.actionRecordFragmentToEditInsectFragment(recordInsect)
+            findNavController().navigate(action)
         }
 
         reportsAdapter = ReportListAdapter(){ reportInsect: ReportInsectBySpeciesDomain ->

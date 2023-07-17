@@ -12,6 +12,8 @@ interface RecordAndReportInsectGeolocationDao {
     @Query(
         """
             SELECT
+                et.id AS idEntomologist,
+                gt.id AS idGeolocation,
                 ins.id AS idInsect,
                 re.id AS idRecord,
                 re.count_insect AS countInsect, 
@@ -25,7 +27,8 @@ interface RecordAndReportInsectGeolocationDao {
                 gt.longitude AS longitude
             FROM record_table AS re 
             JOIN insect_table AS ins ON re.id_insect = ins.id 
-            JOIN geolocation_table AS gt ON re.id_geolocation = gt.id 
+            JOIN geolocation_table AS gt ON re.id_geolocation = gt.id
+            JOIN entomologist_table AS et ON et.id = re.id_entomologist
             ORDER BY re.id DESC
         """
     )

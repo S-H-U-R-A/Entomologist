@@ -1,14 +1,14 @@
 package com.pragma.entomologistapp.data.local.database.entity.customResponses
 
-import android.os.Parcelable
 import com.pragma.entomologistapp.core.FormatDateEntomologist.DD_MM_YYYY
 import com.pragma.entomologistapp.core.ext.toStringWithFormat
 import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
-import kotlinx.parcelize.Parcelize
 import java.util.Calendar
 
-@Parcelize
+
 data class RecordInsectGeolocation(
+    val idEntomologist: Int,
+    val idGeolocation: Int,
     val idInsect: Int,
     val idRecord: Int,
     val countInsect: Int,
@@ -20,8 +20,10 @@ data class RecordInsectGeolocation(
     val cityName: String,
     val latitude: Double,
     val longitude: Double
-): Parcelable{
+){
     fun toDomain() : RecordInsectGeolocationDomain = RecordInsectGeolocationDomain(
+        this.idEntomologist,
+        this.idGeolocation,
         this.idInsect,
         this.idRecord,
         this.countInsect,

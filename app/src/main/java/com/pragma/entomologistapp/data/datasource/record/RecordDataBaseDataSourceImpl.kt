@@ -12,4 +12,8 @@ class RecordDataBaseDataSourceImpl @Inject constructor(
     override suspend fun insertRecord(recordEntity: RecordEntity) {
         recordDao.insertRecord(recordEntity)
     }
+
+    override suspend fun updateRecord(recordEntity: RecordEntity) {
+        recordDao.updateRecord(recordEntity)
+    }
 }
