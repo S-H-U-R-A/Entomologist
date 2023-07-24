@@ -15,8 +15,7 @@ import com.bumptech.glide.Glide
 import com.pragma.entomologistapp.core.ext.showSimpleMessageSnackBar
 import com.pragma.entomologistapp.databinding.FragmentEditInsectBinding
 import com.pragma.entomologistapp.domain.model.RecordInsectGeolocationDomain
-import com.pragma.entomologistapp.ui.countInsect.UserMessages
-import com.pragma.entomologistapp.ui.editInsect.EditInsectUserMessage.*
+import com.pragma.entomologistapp.ui.editInsect.EditInsectUserMessage.NOT_DATA_FOUND_FOR_EDIT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -55,13 +54,13 @@ class EditInsectFragment : Fragment() {
         }
         //LISTENER EDIT BUTTON
         binding.mbEdit.setOnClickListener {
-            /*if(_recordInsectGeolocationDomain != null){
+            if(_recordInsectGeolocationDomain != null){
                 findNavController().navigate(
                     EditInsectFragmentDirections.actionEditInsectFragmentToCountInsectFragment(null, _recordInsectGeolocationDomain)
                 )
             }else {
                 viewModel.sendMessageEntomologist(NOT_DATA_FOUND_FOR_EDIT)
-            }*/
+            }
         }
     }
 
